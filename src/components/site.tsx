@@ -25,7 +25,6 @@ import {
   MapPin,
   ExternalLink,
   ChevronRight,
-  Instagram,
   Sparkles,
   ShieldCheck,
   Clock,
@@ -43,6 +42,40 @@ import { HeroShowcase } from "./hero-showcase";
 import { StepIllustration } from "./process-illustrations";
 import { ProjectInquiryForm } from "./inquiry-form";
 import { FloatingWhatsAppButton } from "./whatsapp-button";
+
+function InstagramBrandIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+      <defs>
+        <linearGradient id="instagram-brand-gradient" x1="2" y1="22" x2="22" y2="2" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#FFB800" />
+          <stop offset=".48" stopColor="#F0447A" />
+          <stop offset="1" stopColor="#A832C7" />
+        </linearGradient>
+      </defs>
+      <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="url(#instagram-brand-gradient)" strokeWidth="2.2" />
+      <circle cx="12" cy="12" r="4.1" fill="none" stroke="url(#instagram-brand-gradient)" strokeWidth="2.2" />
+      <circle cx="17.6" cy="6.7" r="1.2" fill="#F0447A" />
+    </svg>
+  );
+}
+
+function FacebookBrandIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="#1877F2" aria-hidden="true">
+      <path d="M13.64 21v-8.2h2.76l.41-3.2h-3.17V7.56c0-.93.26-1.56 1.59-1.56H17V3.14c-.31-.04-1.39-.14-2.64-.14-2.61 0-4.4 1.59-4.4 4.51V9.6H7v3.2h2.96V21h3.68Z" />
+    </svg>
+  );
+}
+
+function YouTubeBrandIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">
+      <path fill="#FF0033" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8Z" />
+      <path fill="#fff" d="m9.6 15.6 6.2-3.6-6.2-3.6v7.2Z" />
+    </svg>
+  );
+}
 
 // Helper for service icons
 function getServiceIcon(name: string) {
@@ -203,24 +236,6 @@ export function Header() {
 // 4. HERO SECTION
 // -------------------------------------------------------------
 export function Hero() {
-  const portfolioStats = [
-    { value: String(projects.length).padStart(2, "0"), label: "Projects Showcased" },
-    { value: String(projects.filter((project) => project.isClientWork).length).padStart(2, "0"), label: "Active Client Project" },
-    { value: String(projects.filter((project) => !project.isClientWork).length).padStart(2, "0"), label: "Demo Builds" },
-    { value: String(services.length).padStart(2, "0"), label: "Service Areas" },
-  ];
-
-  const renderPortfolioStats = (isDuplicate = false) => (
-    <div className="hero-proof-group" aria-hidden={isDuplicate}>
-      {portfolioStats.map((stat) => (
-        <span className="hero-proof-stat" key={stat.label}>
-          <strong>{stat.value}</strong>
-          <span>{stat.label}</span>
-        </span>
-      ))}
-    </div>
-  );
-
   return (
     <section className="hero-section" id="home">
       <div className="page-wrap hero-layout">
@@ -240,8 +255,8 @@ export function Hero() {
           </h1>
 
           <p className="hero-subparagraph">
-            From business websites and mobile applications to custom software systems, we
-            help turn your ideas into practical digital products built around your requirements.
+            We build custom websites, mobile apps, and software systems designed around your
+            business needs — from the first idea to the final launch.
           </p>
 
           <div className="hero-cta-group">
@@ -253,30 +268,13 @@ export function Hero() {
             </Link>
           </div>
 
-          {/* Compact Service Line with Live Dot */}
-          <div className="hero-service-line">
-            <span className="service-dot" />
-            <span className="service-names">
-              Websites &middot; Mobile Apps &middot; Custom Software &middot; Admin Panels
-            </span>
-          </div>
-
-          <div className="hero-proof-marquee" aria-label="Portfolio overview">
-            <div className="hero-proof-track">
-              {renderPortfolioStats()}
-              {renderPortfolioStats(true)}
-            </div>
-          </div>
-
-          {/* Key Value Micro-Tags */}
-          <div className="hero-micro-guarantees">
-            <span><CheckCircle2 size={13} className="text-sky-600" /> 100% Client Code Ownership</span>
-            <span><CheckCircle2 size={13} className="text-sky-600" /> Direct Technical Team</span>
-            <span><CheckCircle2 size={13} className="text-sky-600" /> Agreed Bug-Fix Warranty</span>
-          </div>
+          <p className="hero-trust-line">
+            Custom-Built Solutions <span aria-hidden="true">·</span> Dedicated Development Team
+            <span aria-hidden="true">·</span> End-to-End Support
+          </p>
         </div>
 
-        {/* Right Column: Interactive Multi-Device Product Showcase */}
+        {/* Right Column: Verified Client Product Showcase */}
         <div className="hero-showcase-wrapper">
           <HeroShowcase />
         </div>
@@ -1166,18 +1164,44 @@ export function Footer() {
                 <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
               </p>
             </div>
-            {siteConfig.social.instagram && (
-              <div className="footer-social-row">
-                <a
-                  href={siteConfig.social.instagram}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="social-btn"
-                  aria-label="Patkar Infotech on Instagram"
-                >
-                  <Instagram size={17} />
-                  <span>@guru3695495</span>
-                </a>
+            {(siteConfig.social.instagram || siteConfig.social.facebook || siteConfig.social.youtube) && (
+              <div className="footer-social-row" role="group" aria-label="Social media links">
+                {siteConfig.social.instagram && (
+                  <a
+                    href={siteConfig.social.instagram}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="social-btn social-icon-btn"
+                    aria-label="Patkar Infotech on Instagram: @guru3695495"
+                    title="Instagram"
+                  >
+                    <InstagramBrandIcon />
+                  </a>
+                )}
+                {siteConfig.social.facebook && (
+                  <a
+                    href={siteConfig.social.facebook}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="social-btn social-icon-btn"
+                    aria-label="Patkar Infotech on Facebook"
+                    title="Facebook"
+                  >
+                    <FacebookBrandIcon />
+                  </a>
+                )}
+                {siteConfig.social.youtube && (
+                  <a
+                    href={siteConfig.social.youtube}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="social-btn social-icon-btn"
+                    aria-label="Patkar Infotech on YouTube"
+                    title="YouTube"
+                  >
+                    <YouTubeBrandIcon />
+                  </a>
+                )}
               </div>
             )}
           </div>
