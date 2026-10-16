@@ -332,6 +332,43 @@ export function EngineeringTrustStrip() {
 // -------------------------------------------------------------
 // 5. SERVICES SECTION (Ten-Service Grid)
 // -------------------------------------------------------------
+const technologyLogos = [
+  { name: "TypeScript", src: "/images/technologies/typescript.svg" },
+  { name: "JavaScript", src: "/images/technologies/javascript.svg" },
+  { name: "Python", src: "/images/technologies/python.svg" },
+  { name: "PHP", src: "/images/technologies/php.svg" },
+  { name: "Java", src: "/images/technologies/java.svg" },
+  { name: "Go", src: "/images/technologies/go.svg" },
+  { name: "C#", src: "/images/technologies/csharp.svg" },
+  { name: "C++", src: "/images/technologies/cpp.svg" },
+];
+
+function TechnologyLogoScroller() {
+  return (
+    <div className="technology-logo-strip">
+      <h3 className="technology-logo-heading">Tools We Use to Make Your App or Website</h3>
+      <div className="technology-logo-viewport" role="region" aria-label="Technology logos">
+        <div className="technology-logo-track">
+          {[false, true].map((isDuplicate) => (
+            <div
+              className="technology-logo-group"
+              key={isDuplicate ? "duplicate" : "original"}
+              aria-hidden={isDuplicate}
+            >
+              {technologyLogos.map((technology) => (
+                <span className="technology-logo-item" key={technology.name}>
+                  <Image src={technology.src} alt="" width={28} height={28} />
+                  <span>{technology.name}</span>
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ServicesSection() {
   return (
     <section className="section services-section" id="services">
@@ -392,6 +429,8 @@ export function ServicesSection() {
             Discuss Your Project <ArrowRight size={15} />
           </Link>
         </div>
+
+        <TechnologyLogoScroller />
       </div>
     </section>
   );
@@ -1307,7 +1346,6 @@ export default function Site() {
         <AboutSection />
         <WhyPatkarSection />
         <ProcessSection />
-        <TechnologiesSection />
         <ContactSection />
       </main>
       <Footer />

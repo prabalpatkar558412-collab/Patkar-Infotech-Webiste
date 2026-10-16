@@ -8,7 +8,7 @@ export function SiteIntro() {
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const timer = window.setTimeout(() => setVisible(false), reducedMotion ? 500 : 5000);
+    const timer = window.setTimeout(() => setVisible(false), reducedMotion ? 500 : 3000);
     return () => window.clearTimeout(timer);
   }, []);
 
