@@ -31,6 +31,7 @@ import {
   Terminal,
   Award,
   Lock,
+  MousePointer2,
 } from "lucide-react";
 
 import { siteConfig } from "@/lib/config";
@@ -369,6 +370,63 @@ function TechnologyLogoScroller() {
   );
 }
 
+function TechPillIcon({ name }: { name: string }) {
+  const localIcons: Record<string, string> = {
+    JavaScript: "/images/technologies/javascript.svg",
+    TypeScript: "/images/technologies/typescript.svg",
+    Python: "/images/technologies/python.svg",
+    PHP: "/images/technologies/php.svg",
+    Java: "/images/technologies/java.svg",
+    Go: "/images/technologies/go.svg",
+    "C#": "/images/technologies/csharp.svg",
+    "C++": "/images/technologies/cpp.svg",
+  };
+  if (localIcons[name]) {
+    return <img className="tech-pill-icon" src={localIcons[name]} alt="" aria-hidden="true" />;
+  }
+  if (name === "React" || name === "React Native") {
+    return (
+      <svg className="tech-pill-icon react-tech-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="1.7" fill="currentColor" />
+        <g fill="none" stroke="currentColor" strokeWidth="1.2">
+          <ellipse cx="12" cy="12" rx="10" ry="3.8" />
+          <ellipse cx="12" cy="12" rx="10" ry="3.8" transform="rotate(60 12 12)" />
+          <ellipse cx="12" cy="12" rx="10" ry="3.8" transform="rotate(120 12 12)" />
+        </g>
+      </svg>
+    );
+  }
+  if (name === "Node.js") return <Server className="tech-pill-icon node-tech-icon" aria-hidden="true" />;
+  if (name === "PostgreSQL" || name === "Supabase") return <Database className="tech-pill-icon postgres-tech-icon" aria-hidden="true" />;
+  if (name === "Tailwind CSS" || name === "Design Systems") return <Layers className="tech-pill-icon generic-tech-icon" aria-hidden="true" />;
+  if (name === "Firebase" || name === "Performance") return <Zap className="tech-pill-icon firebase-tech-icon" aria-hidden="true" />;
+  if (name === "REST APIs") return <Globe className="tech-pill-icon generic-tech-icon" aria-hidden="true" />;
+  if (name === "AWS") return <Server className="tech-pill-icon generic-tech-icon" aria-hidden="true" />;
+  if (name === "Linux" || name === "CI/CD") return <Terminal className="tech-pill-icon generic-tech-icon" aria-hidden="true" />;
+  if (name === "Monitoring") return <Clock className="tech-pill-icon generic-tech-icon" aria-hidden="true" />;
+  if (name === "Security") return <ShieldCheck className="tech-pill-icon generic-tech-icon" aria-hidden="true" />;
+  if (name === "Prototyping") return <MousePointer2 className="tech-pill-icon generic-tech-icon" aria-hidden="true" />;
+  if (name === "Next.js") {
+    return <span className="tech-pill-icon nextjs-tech-icon" aria-hidden="true">N</span>;
+  }
+  if (name === "Figma") {
+    return (
+      <svg className="tech-pill-icon figma-tech-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="#f24e1e" d="M8 2h4v6H8a3 3 0 1 1 0-6Z" />
+        <path fill="#ff7262" d="M12 2h4a3 3 0 1 1 0 6h-4V2Z" />
+        <path fill="#a259ff" d="M8 8h4v6H8a3 3 0 1 1 0-6Z" />
+        <circle cx="15" cy="11" r="3" fill="#1abcfe" />
+        <path fill="#0acf83" d="M8 14h4v3a3 3 0 1 1-4-2.83V14Z" />
+      </svg>
+    );
+  }
+  return <Code2 className="tech-pill-icon generic-tech-icon" aria-hidden="true" />;
+}
+
+function TechPill({ name }: { name: string }) {
+  return <span className="tech-pill"><TechPillIcon name={name} />{name}</span>;
+}
+
 export function ServicesSection() {
   return (
     <section className="section services-section" id="services">
@@ -408,7 +466,7 @@ export function ServicesSection() {
               <div className="card-footer-action">
                 <div className="tech-pills-row">
                   {item.techStack.slice(0, 2).map((tech) => (
-                    <span key={tech} className="tech-pill">{tech}</span>
+                    <TechPill key={tech} name={tech} />
                   ))}
                 </div>
                 <Link href={`/services/${item.slug}`} className="service-detail-link">
@@ -885,27 +943,27 @@ export function WhyPatkarSection() {
             </div>
             <div className="comparison-row">
               <span className="col-factor">Development Scope</span>
-              <span className="col-patkar font-bold text-sky-700">✓ Tailored to exact business logic</span>
-              <span className="col-others">✕ Pre-made script reselling</span>
-              <span className="col-others">✕ Bloated upsells &amp; delays</span>
+              <span className="col-patkar font-bold text-sky-700" data-label="Patkar Infotech">✓ Tailored to exact business logic</span>
+              <span className="col-others col-freelancer" data-label="Generic Freelancer">✕ Pre-made script reselling</span>
+              <span className="col-others col-agency" data-label="Traditional Agency">✕ Bloated upsells &amp; delays</span>
             </div>
             <div className="comparison-row">
               <span className="col-factor">Code Ownership</span>
-              <span className="col-patkar font-bold text-sky-700">✓ 100% Owned by Client</span>
-              <span className="col-others">✕ Unclear repository access</span>
-              <span className="col-others">✕ High licensing lock-in</span>
+              <span className="col-patkar font-bold text-sky-700" data-label="Patkar Infotech">✓ 100% Owned by Client</span>
+              <span className="col-others col-freelancer" data-label="Generic Freelancer">✕ Unclear repository access</span>
+              <span className="col-others col-agency" data-label="Traditional Agency">✕ High licensing lock-in</span>
             </div>
             <div className="comparison-row">
               <span className="col-factor">Communication</span>
-              <span className="col-patkar font-bold text-sky-700">✓ Direct technical lead access</span>
-              <span className="col-others">✕ Unpredictable availability</span>
-              <span className="col-others">✕ Filtered by non-technical reps</span>
+              <span className="col-patkar font-bold text-sky-700" data-label="Patkar Infotech">✓ Direct technical lead access</span>
+              <span className="col-others col-freelancer" data-label="Generic Freelancer">✕ Unpredictable availability</span>
+              <span className="col-others col-agency" data-label="Traditional Agency">✕ Filtered by non-technical reps</span>
             </div>
             <div className="comparison-row">
               <span className="col-factor">Post-Launch Warranty</span>
-              <span className="col-patkar font-bold text-sky-700">✓ Agreed bug-fix &amp; stability warranty</span>
-              <span className="col-others">✕ Vanishes after final payment</span>
-              <span className="col-others">✕ Expensive hourly retainers</span>
+              <span className="col-patkar font-bold text-sky-700" data-label="Patkar Infotech">✓ Agreed bug-fix &amp; stability warranty</span>
+              <span className="col-others col-freelancer" data-label="Generic Freelancer">✕ Vanishes after final payment</span>
+              <span className="col-others col-agency" data-label="Traditional Agency">✕ Expensive hourly retainers</span>
             </div>
           </div>
         </div>
@@ -936,21 +994,64 @@ export function ProcessSection() {
           </p>
         </div>
 
-        {/* Interactive Step Navigator */}
-        <div className="process-interactive-bar" role="tablist" aria-label="Development Steps">
-          {processSteps.map((step, idx) => (
-            <button
-              key={step.number}
-              type="button"
-              role="tab"
-              aria-selected={activeStepIndex === idx}
-              className={`process-nav-tab ${activeStepIndex === idx ? "is-active" : ""}`}
-              onClick={() => setActiveStepIndex(idx)}
-            >
-              <span className="nav-step-num">{step.number}</span>
-              <span className="nav-step-title">{step.title}</span>
-            </button>
-          ))}
+        <div className="process-progress-overview">
+          <div className="process-progress-copy">
+            <span className="process-progress-kicker">YOUR PROJECT JOURNEY</span>
+            <strong>{activeStep.title}</strong>
+            <span>Step {activeStepIndex + 1} of {processSteps.length}</span>
+          </div>
+          <div
+            className="process-progress-track"
+            role="progressbar"
+            aria-label="Project process progress"
+            aria-valuemin={0}
+            aria-valuemax={processSteps.length}
+            aria-valuenow={activeStepIndex + 1}
+          >
+            <span style={{ width: `${((activeStepIndex + 1) / processSteps.length) * 100}%` }} />
+          </div>
+        </div>
+
+        {/* Interactive serpentine process flow */}
+        <div className="process-flow-diagram" role="tablist" aria-label="Project process flow">
+          <div className="process-flow-row process-flow-row-forward">
+            {processSteps.slice(0, 4).map((step, idx) => (
+              <button
+                key={step.number}
+                type="button"
+                role="tab"
+                aria-selected={activeStepIndex === idx}
+                className={`process-flow-node ${activeStepIndex === idx ? "is-active" : ""} ${idx < activeStepIndex ? "is-complete" : ""}`}
+                onClick={() => setActiveStepIndex(idx)}
+              >
+                <span className="flow-node-top"><span className="flow-node-number">{idx < activeStepIndex ? <Check size={13} strokeWidth={3} /> : step.number}</span><span className="flow-node-status">{idx < activeStepIndex ? "COMPLETE" : "PHASE"}</span></span>
+                <span className="flow-node-art"><StepIllustration id={step.illustrationId} /></span>
+                <strong>{step.title}</strong>
+                <span className="flow-node-description">{step.headline}</span>
+              </button>
+            ))}
+          </div>
+          <div className="process-flow-turn" aria-hidden="true"><span>CONTINUES</span></div>
+          <div className="process-flow-row process-flow-row-reverse">
+            {processSteps.slice(4, 8).reverse().map((step) => {
+              const idx = processSteps.indexOf(step);
+              return (
+                <button
+                  key={step.number}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeStepIndex === idx}
+                  className={`process-flow-node ${activeStepIndex === idx ? "is-active" : ""} ${idx < activeStepIndex ? "is-complete" : ""}`}
+                  onClick={() => setActiveStepIndex(idx)}
+                >
+                  <span className="flow-node-top"><span className="flow-node-number">{idx < activeStepIndex ? <Check size={13} strokeWidth={3} /> : step.number}</span><span className="flow-node-status">{idx < activeStepIndex ? "COMPLETE" : "PHASE"}</span></span>
+                  <span className="flow-node-art"><StepIllustration id={step.illustrationId} /></span>
+                  <strong>{step.title}</strong>
+                  <span className="flow-node-description">{step.headline}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Featured Step Spotlight Stage */}
@@ -1005,23 +1106,6 @@ export function ProcessSection() {
           </div>
         </div>
 
-        {/* Complete 8-Step Timeline Overview */}
-        <div className="process-full-timeline">
-          <h4 className="timeline-title">Complete 8-Step Timeline Overview:</h4>
-          <div className="timeline-cards-scroll">
-            {processSteps.map((step, idx) => (
-              <div
-                key={step.number}
-                className={`timeline-mini-card ${activeStepIndex === idx ? "is-selected" : ""}`}
-                onClick={() => setActiveStepIndex(idx)}
-              >
-                <span className="mini-num">{step.number}</span>
-                <strong>{step.title}</strong>
-                <p>{step.headline}</p>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
@@ -1344,7 +1428,6 @@ export default function Site() {
         <WorkSection />
         <PartnershipMarquee />
         <AboutSection />
-        <WhyPatkarSection />
         <ProcessSection />
         <ContactSection />
       </main>

@@ -32,7 +32,7 @@ export const siteConfig: CompanyConfig = {
     "From business websites and mobile applications to custom software systems, we help turn your ideas into practical digital products built around your requirements.",
   phone: "7723821518",
   phoneFormatted: "+91 77238 21518",
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "info@patkarinfotech.com",
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "infotechpatkar@gmail.com",
   city: "Jabalpur",
   state: "Madhya Pradesh",
   country: "India",
