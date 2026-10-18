@@ -1,10 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { siteConfig } from "@/lib/config";
 
 export function FloatingWhatsAppButton() {
   const [isHovered, setIsHovered] = useState(false);
+  const [isProcessDetailVisible, setIsProcessDetailVisible] = useState(false);
+
+  useEffect(() => {
+    const processDetail = document.querySelector(".process-spotlight-card");
+    if (!processDetail || !("IntersectionObserver" in window)) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsProcessDetailVisible(entry.isIntersecting),
+      { threshold: 0.01 },
+    );
+
+    observer.observe(processDetail);
+    return () => observer.disconnect();
+  }, []);
 
   const cleanNumber = siteConfig.whatsappNumber.replace(/\D/g, "");
   const defaultMessage = encodeURIComponent(siteConfig.whatsappDefaultMessage);
@@ -12,7 +26,7 @@ export function FloatingWhatsAppButton() {
 
   return (
     <aside
-      className="floating-whatsapp-container"
+      className={`floating-whatsapp-container ${isProcessDetailVisible ? "is-process-detail-visible" : ""}`}
       aria-label="Direct WhatsApp Contact"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

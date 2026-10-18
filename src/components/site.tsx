@@ -979,131 +979,114 @@ export function ProcessSection() {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const activeStep = processSteps[activeStepIndex];
 
+  const selectProcessStep = (index: number) => {
+    setActiveStepIndex(index);
+
+    const detailPanel = document.getElementById("process-step-detail");
+    if (detailPanel) {
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      detailPanel.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "start",
+      });
+    }
+  };
+
   return (
     <section className="section process-section" id="process">
       <div className="page-wrap">
         <div className="section-header">
           <div className="section-eyebrow">
             <span className="eyebrow-accent-bar" />
-            <span>OUR PROCESS</span>
+            <span>HOW WE WORK</span>
           </div>
-          <h2 className="section-title">From First Discussion to Launch.</h2>
+          <h2 className="section-title">From Your First Idea to a Working Product</h2>
           <p className="section-subtitle">
-            An eight-step engineering roadmap keeping scope, design, development, and delivery
-            structured and transparent from start to finish.
+            A clear, collaborative development process that keeps you informed from planning and
+            design to launch and ongoing support.
+          </p>
+          <p className="process-journey-note">
+            <strong>8 steps</strong><span aria-hidden="true">·</span> One clear development journey
           </p>
         </div>
 
-        <div className="process-progress-overview">
-          <div className="process-progress-copy">
-            <span className="process-progress-kicker">YOUR PROJECT JOURNEY</span>
-            <strong>{activeStep.title}</strong>
-            <span>Step {activeStepIndex + 1} of {processSteps.length}</span>
-          </div>
-          <div
-            className="process-progress-track"
-            role="progressbar"
-            aria-label="Project process progress"
-            aria-valuemin={0}
-            aria-valuemax={processSteps.length}
-            aria-valuenow={activeStepIndex + 1}
-          >
-            <span style={{ width: `${((activeStepIndex + 1) / processSteps.length) * 100}%` }} />
-          </div>
-        </div>
-
-        {/* Interactive serpentine process flow */}
-        <div className="process-flow-diagram" role="tablist" aria-label="Project process flow">
-          <div className="process-flow-row process-flow-row-forward">
-            {processSteps.slice(0, 4).map((step, idx) => (
-              <button
-                key={step.number}
-                type="button"
-                role="tab"
-                aria-selected={activeStepIndex === idx}
-                className={`process-flow-node ${activeStepIndex === idx ? "is-active" : ""} ${idx < activeStepIndex ? "is-complete" : ""}`}
-                onClick={() => setActiveStepIndex(idx)}
-              >
-                <span className="flow-node-top"><span className="flow-node-number">{idx < activeStepIndex ? <Check size={13} strokeWidth={3} /> : step.number}</span><span className="flow-node-status">{idx < activeStepIndex ? "COMPLETE" : "PHASE"}</span></span>
-                <span className="flow-node-art"><StepIllustration id={step.illustrationId} /></span>
-                <strong>{step.title}</strong>
-                <span className="flow-node-description">{step.headline}</span>
-              </button>
-            ))}
-          </div>
-          <div className="process-flow-turn" aria-hidden="true"><span>CONTINUES</span></div>
-          <div className="process-flow-row process-flow-row-reverse">
-            {processSteps.slice(4, 8).reverse().map((step) => {
-              const idx = processSteps.indexOf(step);
-              return (
-                <button
-                  key={step.number}
-                  type="button"
-                  role="tab"
-                  aria-selected={activeStepIndex === idx}
-                  className={`process-flow-node ${activeStepIndex === idx ? "is-active" : ""} ${idx < activeStepIndex ? "is-complete" : ""}`}
-                  onClick={() => setActiveStepIndex(idx)}
-                >
-                  <span className="flow-node-top"><span className="flow-node-number">{idx < activeStepIndex ? <Check size={13} strokeWidth={3} /> : step.number}</span><span className="flow-node-status">{idx < activeStepIndex ? "COMPLETE" : "PHASE"}</span></span>
-                  <span className="flow-node-art"><StepIllustration id={step.illustrationId} /></span>
-                  <strong>{step.title}</strong>
-                  <span className="flow-node-description">{step.headline}</span>
-                </button>
-              );
-            })}
-          </div>
+        <div className="process-flow-diagram" role="group" aria-label="Eight steps in our development process">
+          {processSteps.map((step, idx) => (
+            <button
+              key={step.number}
+              type="button"
+              data-step={idx + 1}
+              aria-pressed={activeStepIndex === idx}
+              aria-controls="process-step-detail"
+              className={`process-flow-node ${activeStepIndex === idx ? "is-active" : ""}`}
+              onClick={() => selectProcessStep(idx)}
+            >
+              <span className="flow-node-top"><span className="flow-node-number">{step.number}</span></span>
+              <span className="flow-node-art"><StepIllustration id={step.illustrationId} /></span>
+              <strong>{step.title}</strong>
+              <span className="flow-node-description">{step.headline}</span>
+            </button>
+          ))}
         </div>
 
         {/* Featured Step Spotlight Stage */}
-        <div className="process-spotlight-card">
-          <div className="spotlight-visual-side">
-            <StepIllustration id={activeStep.illustrationId} className="w-full h-auto" />
-            <div className="spotlight-number-corner">{activeStep.number}</div>
-          </div>
-
+        <div className="process-spotlight-card" id="process-step-detail" aria-live="polite">
           <div className="spotlight-content-side">
-            <div className="spotlight-tag-row">
-              <span className="spotlight-phase">PHASE {activeStep.number} &middot; {activeStep.title}</span>
-            </div>
-            <h3 className="spotlight-headline">{activeStep.headline}</h3>
-            <p className="spotlight-summary">{activeStep.summary}</p>
+            <div key={activeStep.key} className="process-step-copy">
+              <div className="spotlight-tag-row">
+                <span className="spotlight-phase">STEP {activeStep.number} &middot; {activeStep.title}</span>
+              </div>
+              <h3 className="spotlight-headline">{activeStep.headline}</h3>
+              <p className="spotlight-summary">{activeStep.summary}</p>
 
-            <div className="spotlight-deliverables-box">
-              <small>KEY DELIVERABLES IN THIS STAGE:</small>
-              <div className="deliverable-pills-row">
-                {activeStep.deliverables.map((item) => (
-                  <span key={item} className="stage-pill">
-                    <Check size={12} className="text-sky-600" />
-                    <span>{item}</span>
-                  </span>
-                ))}
+              <div className="spotlight-deliverables-box">
+                <small>KEY DELIVERABLES IN THIS STAGE:</small>
+                <div className="deliverable-pills-row">
+                  {activeStep.deliverables.map((item) => (
+                    <span key={item} className="stage-pill">
+                      <Check size={12} className="text-sky-600" />
+                      <span>{item}</span>
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
+          </div>
 
-            <div className="spotlight-controls">
-              <button
-                type="button"
-                className="button button-outline button-sm"
-                disabled={activeStepIndex === 0}
-                onClick={() => setActiveStepIndex((prev) => Math.max(0, prev - 1))}
-              >
-                &larr; Previous Step
-              </button>
-              <span className="step-counter-text">
-                Step {activeStepIndex + 1} of {processSteps.length}
-              </span>
-              <button
-                type="button"
-                className="button button-blue button-sm"
-                disabled={activeStepIndex === processSteps.length - 1}
-                onClick={() =>
-                  setActiveStepIndex((prev) => Math.min(processSteps.length - 1, prev + 1))
-                }
-              >
-                Next Step &rarr;
-              </button>
+          <div className="spotlight-visual-side">
+            <StepIllustration
+              key={activeStep.key}
+              id={activeStep.illustrationId}
+              className="w-full h-auto process-step-visual"
+            />
+            <div key={`${activeStep.key}-number`} className="spotlight-number-corner process-step-enter">
+              STEP {activeStep.number}
             </div>
           </div>
+
+          <nav className="spotlight-controls" aria-label="Development process steps">
+            <button
+              type="button"
+              className="button button-outline button-sm"
+              disabled={activeStepIndex === 0}
+              onClick={() => setActiveStepIndex((prev) => Math.max(0, prev - 1))}
+            >
+              &larr; Previous Step
+            </button>
+            <span className="step-counter-text" aria-live="polite">
+              Step {activeStepIndex + 1} of {processSteps.length}
+            </span>
+            <button
+              type="button"
+              className="button button-blue button-sm"
+              disabled={activeStepIndex === processSteps.length - 1}
+              onClick={() =>
+                setActiveStepIndex((prev) => Math.min(processSteps.length - 1, prev + 1))
+              }
+            >
+              Next Step &rarr;
+            </button>
+          </nav>
         </div>
 
       </div>
@@ -1425,9 +1408,7 @@ export default function Site() {
         <Hero />
         <EngineeringTrustStrip />
         <ServicesSection />
-        <WorkSection />
         <PartnershipMarquee />
-        <AboutSection />
         <ProcessSection />
         <ContactSection />
       </main>

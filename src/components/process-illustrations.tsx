@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface IllustrationProps {
   className?: string;
@@ -13,21 +14,85 @@ export function StepIllustration({
 }) {
   switch (id) {
     case "discuss":
-      return <DiscussIllustration className={className} />;
+      return (
+        <Image
+          src="/p-1.png"
+          alt="Initial project discussion"
+          width={1376}
+          height={768}
+          className={className}
+        />
+      );
     case "plan":
-      return <PlanIllustration className={className} />;
+      return (
+        <Image
+          src="/p-2.png"
+          alt="Project planning roadmap"
+          width={1376}
+          height={768}
+          className={className}
+        />
+      );
     case "design":
-      return <DesignIllustration className={className} />;
+      return (
+        <Image
+          src="/p-3.png"
+          alt="Product interface design and wireframes"
+          width={1376}
+          height={768}
+          className={className}
+        />
+      );
     case "develop":
-      return <DevelopIllustration className={className} />;
+      return (
+        <Image
+          src="/p-4.png"
+          alt="Software development in progress"
+          width={1376}
+          height={768}
+          className={className}
+        />
+      );
     case "test":
-      return <TestIllustration className={className} />;
+      return (
+        <Image
+          src="/p-5.png"
+          alt="Software quality testing and review"
+          width={1376}
+          height={768}
+          className={className}
+        />
+      );
     case "launch":
-      return <LaunchIllustration className={className} />;
+      return (
+        <Image
+          src="/p-6.png"
+          alt="Software launch and deployment"
+          width={1376}
+          height={768}
+          className={className}
+        />
+      );
     case "support":
-      return <SupportIllustration className={className} />;
+      return (
+        <Image
+          src="/p-7.png"
+          alt="Technical support and maintenance"
+          width={1376}
+          height={768}
+          className={className}
+        />
+      );
     case "grow":
-      return <GrowIllustration className={className} />;
+      return (
+        <Image
+          src="/p-8.png"
+          alt="Product growth and analytics"
+          width={1376}
+          height={768}
+          className={className}
+        />
+      );
     default:
       return <DiscussIllustration className={className} />;
   }
