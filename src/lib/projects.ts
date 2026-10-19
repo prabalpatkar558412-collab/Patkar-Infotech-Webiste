@@ -1,7 +1,9 @@
 export interface ProjectItem {
   slug: string;
+  projectType?: "website" | "app";
   title: string;
   clientOrBrand: string;
+  clientDetails?: string;
   isClientWork: boolean;
   statusBadge: string;
   category: string;
@@ -26,6 +28,7 @@ export interface ProjectItem {
 export const projects: ProjectItem[] = [
   {
     slug: "careon24-healthcare-platform",
+    projectType: "website",
     title: "CareOn24 Home Healthcare Platform",
     clientOrBrand: "CareOn24 Healthcare",
     isClientWork: true,
@@ -49,11 +52,12 @@ export const projects: ProjectItem[] = [
     ],
     techStack: ["Next.js", "React", "Tailwind CSS", "REST APIs"],
     liveUrl: "https://www.careon24.com/",
-    previewImage: "/images/projects/careon24-responsive.svg",
+    previewImage: "/images/projects/careon24-healthcare-preview.png",
     accentColor: "#0284c7",
   },
   {
     slug: "westernghats-travel-booking",
+    projectType: "website",
     title: "Western Ghats Trails & Stay Platform",
     clientOrBrand: "RoamWest Eco-Travel",
     isClientWork: false,
@@ -81,6 +85,7 @@ export const projects: ProjectItem[] = [
   },
   {
     slug: "pulseops-business-management-erp",
+    projectType: "app",
     title: "PulseOps Dairy & Logistics Management ERP",
     clientOrBrand: "PulseOps",
     isClientWork: false,
@@ -108,6 +113,7 @@ export const projects: ProjectItem[] = [
   },
   {
     slug: "docuflow-document-pdf-tools",
+    projectType: "app",
     title: "DocuFlow Utility & PDF Processing Suite",
     clientOrBrand: "DocuFlow Engine",
     isClientWork: false,
@@ -135,6 +141,7 @@ export const projects: ProjectItem[] = [
   },
   {
     slug: "aurastore-ecommerce-platform",
+    projectType: "website",
     title: "Aura Living Direct-to-Consumer Storefront",
     clientOrBrand: "Aura Living",
     isClientWork: false,
@@ -161,7 +168,37 @@ export const projects: ProjectItem[] = [
     accentColor: "#d97706",
   },
   {
+    slug: "nuthouse-makhana-storefront",
+    projectType: "website",
+    title: "Nuthouse Makhana Storefront",
+    clientOrBrand: "The Nut House",
+    clientDetails: "Makhana and dry-fruit brand based in Maldah, West Bengal.",
+    isClientWork: true,
+    statusBadge: "Client Project · Live Website",
+    category: "E-commerce Platforms",
+    categorySlug: "ecommerce",
+    shortDescription:
+      "A responsive storefront for premium makhana and dry fruits, with product collections, shopping paths, and brand information.",
+    summary:
+      "The Nut House storefront presents flavoured and raw makhana, dry fruits, and brand information alongside direct shopping actions.",
+    problem:
+      "Shoppers need to browse multiple makhana and dry-fruit collections while finding product, brand, and sourcing information.",
+    solution:
+      "The website organizes product collections, shopping actions, and brand content in a responsive storefront.",
+    keyFeatures: [
+      "Product collections for flavoured and raw makhana, cashews, and raisins",
+      "Product browsing and shopping actions",
+      "Brand story, makhana process, and health information pages",
+      "Responsive desktop and mobile storefront presentation",
+    ],
+    techStack: ["React", "Supabase", "Next.js", "TypeScript", "Tailwind CSS"],
+    liveUrl: "https://www.nuthouse.co.in/",
+    previewImage: "/images/projects/nuthouse-makhana-storefront.png",
+    accentColor: "#84361f",
+  },
+  {
     slug: "quickserve-delivery-rider-platform",
+    projectType: "app",
     title: "QuickServe Hyperlocal Delivery & Rider System",
     clientOrBrand: "QuickServe Logistics",
     isClientWork: false,

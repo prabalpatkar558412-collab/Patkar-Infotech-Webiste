@@ -263,7 +263,7 @@ export function DevelopIllustration({ className = "" }: IllustrationProps) {
       <rect x="32" y="142" width="216" height="14" rx="3" fill="#07193F" />
       <circle cx="42" cy="149" r="2.5" fill="#10B981" />
       <text x="50" y="152" fill="#10B981" fontSize="7.5" fontFamily="monospace">
-        [LIVE] Ready on https://patkarinfotech.com — Compiled in 18ms
+        [LIVE] Ready on https://www.patkarinfotech.com — Compiled in 18ms
       </text>
     </svg>
   );

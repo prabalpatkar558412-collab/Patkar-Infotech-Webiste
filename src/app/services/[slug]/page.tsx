@@ -4,12 +4,26 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Check, ArrowLeft, ShieldCheck, Cpu } from "lucide-react";
 import { Header, Footer } from "@/components/site";
 import { FloatingWhatsAppButton } from "@/components/whatsapp-button";
+import { BreadcrumbJsonLd, pageMetadata, SITE_URL } from "@/lib/seo";
 import { services } from "@/lib/services";
 import "./service.css";
 
 export function generateStaticParams() {
   return services.map(({ slug }) => ({ slug }));
 }
+
+const relatedServiceSlugs: Record<string, string[]> = {
+  "website-development": ["ui-ux-design", "ecommerce-development", "api-backend-development"],
+  "mobile-app-development": ["api-backend-development", "admin-panel-development", "custom-software-development"],
+  "custom-software-development": ["business-management-systems", "admin-panel-development", "api-backend-development"],
+  "admin-panel-development": ["business-management-systems", "custom-software-development", "api-backend-development"],
+  "ecommerce-development": ["website-development", "admin-panel-development", "api-backend-development"],
+  "business-management-systems": ["admin-panel-development", "custom-software-development", "maintenance-support"],
+  "ui-ux-design": ["website-development", "mobile-app-development", "ecommerce-development"],
+  "api-backend-development": ["custom-software-development", "mobile-app-development", "cloud-devops"],
+  "cloud-devops": ["api-backend-development", "maintenance-support", "custom-software-development"],
+  "maintenance-support": ["cloud-devops", "custom-software-development", "api-backend-development"],
+};
 
 export async function generateMetadata({
   params,
@@ -18,12 +32,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const service = services.find((item) => item.slug === slug);
-  return service
-    ? {
-        title: `${service.title} | Patkar Infotech`,
-        description: service.summary,
-      }
-    : {};
+  return service ? pageMetadata(service.title, service.summary, `/services/${service.slug}`) : {};
 }
 
 export default async function ServicePage({
@@ -39,6 +48,8 @@ export default async function ServicePage({
     <>
       <Header />
       <main className="service-page">
+        <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }, { name: service.title, path: `/services/${service.slug}` }]} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "Service", name: service.title, description: service.summary, provider: { "@type": "Organization", name: "Patkar Infotech", url: SITE_URL }, url: `${SITE_URL}/services/${service.slug}` }).replace(/</g, "\\u003c") }} />
         {/* Back navigation */}
         <div className="page-wrap service-back-wrap">
           <Link href="/services" className="service-back-link">
@@ -119,6 +130,20 @@ export default async function ServicePage({
                 </ul>
               </article>
             </div>
+
+            <section className="service-related-links" aria-labelledby="related-services-title">
+              <h2 id="related-services-title">Related services</h2>
+              <div>
+                {relatedServiceSlugs[service.slug]
+                  ?.map((slug) => services.find((item) => item.slug === slug))
+                  .filter((item): item is (typeof services)[number] => Boolean(item))
+                  .map((item) => (
+                    <Link key={item.slug} href={`/services/${item.slug}`}>
+                      {item.title}
+                    </Link>
+                  ))}
+              </div>
+            </section>
 
             {/* Bottom Callout */}
             <section className="service-contact-panel">

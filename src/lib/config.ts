@@ -51,6 +51,7 @@ export const siteConfig: CompanyConfig = {
   navigation: [
     { label: "Home", href: "/#home" },
     { label: "Services", href: "/#services" },
+    { label: "Tools", href: "/#technologies" },
     { label: "Our Work", href: "/#work" },
     { label: "About Us", href: "/#about" },
     { label: "Our Process", href: "/#process" },

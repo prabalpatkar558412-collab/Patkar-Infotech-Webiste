@@ -108,6 +108,28 @@
   margin-bottom: 60px;
 }
 
+.service-related-links {
+  margin: 0 0 56px;
+}
+
+.service-related-links h2 {
+  margin: 0 0 14px;
+  color: var(--ink-dark);
+  font-size: 20px;
+}
+
+.service-related-links > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 22px;
+}
+
+.service-related-links a {
+  color: var(--blue);
+  font-size: 14px;
+  font-weight: 650;
+}
+
 @media (max-width: 768px) {
   .service-detail-columns {
     grid-template-columns: 1fr;

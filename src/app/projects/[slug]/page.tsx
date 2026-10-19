@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { projects } from "@/lib/projects";
 import { Header, Footer } from "@/components/site";
 import { FloatingWhatsAppButton } from "@/components/whatsapp-button";
+import { BreadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 import { ArrowLeft, ArrowRight, ExternalLink, CheckCircle2, ShieldCheck } from "lucide-react";
 import "./case.css";
 
@@ -19,12 +20,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const project = projects.find((item) => item.slug === slug);
-  return project
-    ? {
-        title: `${project.title} | Patkar Infotech Case Study`,
-        description: project.summary,
-      }
-    : {};
+  return project ? pageMetadata(project.title, project.summary, `/projects/${project.slug}`) : {};
 }
 
 export default async function ProjectPage({
@@ -40,6 +36,7 @@ export default async function ProjectPage({
     <>
       <Header />
       <main className="case-study-page">
+        <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Our Work", path: "/work" }, { name: project.title, path: `/projects/${project.slug}` }]} />
         {/* Back Link */}
         <div className="page-wrap case-back-bar">
           <Link href="/#work" className="case-back-link">
@@ -82,7 +79,7 @@ export default async function ProjectPage({
           <div className="case-visual-frame">
             <Image
               src={project.previewImage}
-              alt={`${project.title} preview`}
+              alt={`${project.title}: ${project.shortDescription}`}
               width={960}
               height={500}
               className="case-preview-img"

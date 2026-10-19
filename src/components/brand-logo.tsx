@@ -8,16 +8,12 @@ export function BrandLogo({ invert = false }: { invert?: boolean }) {
       <div className="brand-logo-lockup">
         <Image
           className="brand-symbol-img"
-          src="/brand-symbol.png"
-          width={44}
-          height={38}
-          alt="Patkar Infotech Symbol"
+          src="/WhatsApp_Image_2026-10-19_at_2.23.42_AM-removebg-preview.png"
+          width={56}
+          height={56}
+          alt="Patkar Infotech logo"
           priority
         />
-        <div className="brand-text-block">
-          <span className="brand-name">PATKAR INFOTECH</span>
-          <span className="brand-tagline">SOLUTIONS THAT EMPOWER</span>
-        </div>
       </div>
     </Link>
   );

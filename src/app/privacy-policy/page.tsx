@@ -4,11 +4,9 @@ import { Header, Footer } from "@/components/site";
 import { FloatingWhatsAppButton } from "@/components/whatsapp-button";
 import { siteConfig } from "@/lib/config";
 import { ArrowLeft, Shield } from "lucide-react";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy | Patkar Infotech",
-  description: "How Patkar Infotech handles project inquiries and technical communications.",
-};
+export const metadata: Metadata = pageMetadata("Privacy Policy", "How Patkar Infotech handles project inquiries and technical communications.", "/privacy-policy");
 
 export default function PrivacyPolicy() {
   return (

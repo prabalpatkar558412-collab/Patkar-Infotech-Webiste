@@ -4,11 +4,9 @@ import { Header, Footer } from "@/components/site";
 import { FloatingWhatsAppButton } from "@/components/whatsapp-button";
 import { siteConfig } from "@/lib/config";
 import { ArrowLeft } from "lucide-react";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Terms & Conditions | Patkar Infotech",
-  description: "Terms and conditions governing the use of Patkar Infotech website and services.",
-};
+export const metadata: Metadata = pageMetadata("Terms and Conditions", "Terms and conditions governing use of the Patkar Infotech website and information about its services.", "/terms");
 
 export default function Terms() {
   return (

@@ -39,6 +39,7 @@ import { services } from "@/lib/services";
 import { projects } from "@/lib/projects";
 import { processSteps } from "@/lib/process";
 import { BrandLogo } from "./brand-logo";
+import { ProjectCard } from "./project-card";
 import { HeroShowcase } from "./hero-showcase";
 import { StepIllustration } from "./process-illustrations";
 import { ProjectInquiryForm } from "./inquiry-form";
@@ -134,6 +135,7 @@ export function Header() {
   const navLinks = [
     { label: "Home", href: "/", id: "home" },
     { label: "Services", href: "/services", id: "services" },
+    { label: "Tools", href: "/#technologies", id: "technologies" },
     { label: "Our Work", href: "/work", id: "work" },
     { label: "About", href: "/about", id: "about" },
     { label: "Process", href: "/process", id: "process" },
@@ -248,16 +250,17 @@ export function Hero() {
           </div>
 
           <h1 className="hero-headline">
-            Your Business Idea.
+            Websites, Apps &amp;
             <br />
-            Our Technology.
+            Custom Software
             <br />
-            <span className="headline-accent">Built to Work.</span>
+            <span className="headline-accent">Built for Business.</span>
           </h1>
 
           <p className="hero-subparagraph">
-            We build custom websites, mobile apps, and software systems designed around your
-            business needs — from the first idea to the final launch.
+            Patkar Infotech is a website and software development company in India. We build web
+            applications, mobile apps and custom business systems for startups and growing
+            companies, from the first idea to launch.
           </p>
 
           <div className="hero-cta-group">
@@ -477,17 +480,6 @@ export function ServicesSection() {
           ))}
         </div>
 
-        {/* Direct project inquiry */}
-        <div className="services-planner-banner">
-          <div>
-            <h4>Have a project in mind?</h4>
-            <p>Tell us what your business needs and our team will help you plan the right solution.</p>
-          </div>
-          <Link href="/contact" className="button button-blue">
-            Discuss Your Project <ArrowRight size={15} />
-          </Link>
-        </div>
-
         <TechnologyLogoScroller />
       </div>
     </section>
@@ -495,25 +487,14 @@ export function ServicesSection() {
 }
 
 // -------------------------------------------------------------
-// 6. OUR WORK / PORTFOLIO
+// 6. OUR PROJECTS
 // -------------------------------------------------------------
 export function WorkSection() {
-  const [activeFilter, setActiveFilter] = useState<string>("all");
-
-  const filterCategories = [
-    { label: "All Projects", value: "all" },
-    { label: "Healthcare", value: "healthcare" },
-    { label: "Travel & Booking", value: "travel-booking" },
-    { label: "Business Software", value: "business-management" },
-    { label: "Document Tools", value: "document-tools" },
-    { label: "E-Commerce", value: "ecommerce" },
-    { label: "Delivery & Apps", value: "delivery-services" },
-  ];
-
-  const filteredProjects =
-    activeFilter === "all"
-      ? projects
-      : projects.filter((p) => p.categorySlug === activeFilter);
+  const [activeProjectType, setActiveProjectType] = useState<"website" | "app">("website");
+  const portfolioProjects = projects.filter((project) => project.projectType);
+  const websiteProjects = portfolioProjects.filter((project) => project.projectType === "website");
+  const appProjects = portfolioProjects.filter((project) => project.projectType === "app");
+  const visibleProjects = activeProjectType === "website" ? websiteProjects : appProjects;
 
   return (
     <section className="section work-section" id="work">
@@ -523,113 +504,45 @@ export function WorkSection() {
             <span className="eyebrow-accent-bar" />
             <span>OUR WORK</span>
           </div>
-          <h2 className="section-title">Products Built to Solve Real Problems.</h2>
+          <h2 className="section-title">Projects Built for Real Businesses</h2>
           <p className="section-subtitle">
-            Explore software solutions engineered around business workflows. Client projects
-            are verified; demonstration projects show what we build for specialized industries.
+            Explore the websites, applications, and digital platforms we've built to solve real
+            business challenges.
           </p>
         </div>
 
-        {/* Filter Pills */}
-        <div className="work-filter-bar" role="tablist" aria-label="Portfolio Filters">
-          {filterCategories.map((cat) => (
-            <button
-              key={cat.value}
-              type="button"
-              role="tab"
-              aria-selected={activeFilter === cat.value}
-              className={`work-filter-btn ${activeFilter === cat.value ? "is-active" : ""}`}
-              onClick={() => setActiveFilter(cat.value)}
-            >
-              {cat.label}
-            </button>
-          ))}
+        <div className="project-type-tabs" role="tablist" aria-label="Project type">
+          <button
+            type="button"
+            id="website-projects-tab"
+            role="tab"
+            aria-selected={activeProjectType === "website"}
+            aria-controls="project-type-grid"
+            className={`project-type-tab ${activeProjectType === "website" ? "is-active" : ""}`}
+            onClick={() => setActiveProjectType("website")}
+          >
+            Website Projects
+          </button>
+          <button
+            type="button"
+            id="app-projects-tab"
+            role="tab"
+            aria-selected={activeProjectType === "app"}
+            aria-controls="project-type-grid"
+            className={`project-type-tab ${activeProjectType === "app" ? "is-active" : ""}`}
+            onClick={() => setActiveProjectType("app")}
+          >
+            App Projects
+          </button>
         </div>
 
-        {/* Projects Gallery */}
-        <div className="projects-grid">
-          {filteredProjects.map((proj) => (
-            <article
-              key={proj.slug}
-              className={`project-card ${proj.isClientWork ? "is-client-featured" : ""}`}
-            >
-              <div className="project-preview-frame">
-                {proj.isClientWork && (
-                  <div className="client-badge-corner">
-                    <span className="badge-glow" />
-                    <span>CONFIRMED CLIENT WORK</span>
-                  </div>
-                )}
-                {!proj.isClientWork && (
-                  <div className="concept-badge-corner">
-                    <span>DEMONSTRATION PROJECT</span>
-                  </div>
-                )}
-
-                {/* Visual Preview */}
-                <div className="project-visual-mockup">
-                  <Image
-                    src={proj.previewImage}
-                    alt={`${proj.title} preview`}
-                    width={720}
-                    height={400}
-                    className="project-svg-image"
-                  />
-                </div>
-              </div>
-
-              <div className="project-body">
-                <div className="project-meta-line">
-                  <span className="project-category">{proj.category}</span>
-                  <span
-                    className={`project-status-pill ${
-                      proj.isClientWork ? "status-verified" : "status-demo"
-                    }`}
-                  >
-                    {proj.statusBadge}
-                  </span>
-                </div>
-
-                <h3 className="project-title">{proj.title}</h3>
-                <p className="project-desc">{proj.shortDescription}</p>
-
-                <div className="project-features-list">
-                  {proj.keyFeatures.slice(0, 3).map((f) => (
-                    <div key={f} className="project-feature-item">
-                      <CheckCircle2 size={13} className="text-sky-600 flex-shrink-0" />
-                      <span>{f}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="project-footer">
-                  <div className="project-tech-tags">
-                    {proj.techStack.map((tech) => (
-                      <span key={tech} className="tech-tag">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="project-action-links">
-                    {proj.liveUrl && (
-                      <a
-                        href={proj.liveUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="live-site-link"
-                      >
-                        Live Site <ExternalLink size={13} />
-                      </a>
-                    )}
-                    <Link href={`/projects/${proj.slug}`} className="case-study-btn">
-                      Case Study <ArrowRight size={13} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
+        <div
+          id="project-type-grid"
+          className="projects-grid"
+          role="tabpanel"
+          aria-labelledby={activeProjectType === "website" ? "website-projects-tab" : "app-projects-tab"}
+        >
+          {visibleProjects.map((project) => <ProjectCard key={project.slug} project={project} />)}
         </div>
 
         {/* Credibility Note */}

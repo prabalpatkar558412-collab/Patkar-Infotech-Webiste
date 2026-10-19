@@ -130,7 +130,7 @@ cp .env.example .env.local
 
 | Variable | Description | Default |
 |---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | Canonical domain URL | `https://patkarinfotech.com` |
+| `NEXT_PUBLIC_SITE_URL` | Canonical domain URL | `https://www.patkarinfotech.com` |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | Official inquiries email | `info@patkarinfotech.com` |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | WhatsApp number with country code | `917723821518` |
 | `NEXT_PUBLIC_INSTAGRAM_URL` | Official Instagram link | `https://www.instagram.com/guru3695495/` |
