@@ -70,7 +70,7 @@ export default async function ServicePage({
                 <Link className="button button-blue" href="/#contact">
                   Discuss Your Project <ArrowRight size={16} />
                 </Link>
-                <Link className="button button-outline" href="/#work">
+                <Link className="button button-outline" href="/work">
                   View Relevant Projects
                 </Link>
               </div>

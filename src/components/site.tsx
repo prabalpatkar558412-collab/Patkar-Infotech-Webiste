@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -25,6 +25,7 @@ import {
   MapPin,
   ExternalLink,
   ChevronRight,
+  ChevronLeft,
   Sparkles,
   ShieldCheck,
   Clock,
@@ -44,6 +45,8 @@ import { HeroShowcase } from "./hero-showcase";
 import { StepIllustration } from "./process-illustrations";
 import { ProjectInquiryForm } from "./inquiry-form";
 import { FloatingWhatsAppButton } from "./whatsapp-button";
+import { Testimonials } from "./testimonials";
+import { WebsiteDemos } from "./website-demos";
 
 function InstagramBrandIcon() {
   return (
@@ -135,7 +138,7 @@ export function Header() {
   const navLinks = [
     { label: "Home", href: "/", id: "home" },
     { label: "Services", href: "/services", id: "services" },
-    { label: "Tools", href: "/#technologies", id: "technologies" },
+    { label: "Tools", href: "/tools", id: "tools" },
     { label: "Our Work", href: "/work", id: "work" },
     { label: "About", href: "/about", id: "about" },
     { label: "Process", href: "/process", id: "process" },
@@ -143,7 +146,8 @@ export function Header() {
   ];
   const activeNav = pathname.startsWith("/services") ? "services"
     : pathname.startsWith("/work") || pathname.startsWith("/projects") ? "work"
-      : pathname.startsWith("/about") ? "about"
+        : pathname.startsWith("/tools") ? "tools"
+          : pathname.startsWith("/about") ? "about"
         : pathname.startsWith("/process") ? "process"
           : pathname.startsWith("/contact") ? "contact" : "home";
 
@@ -240,12 +244,12 @@ export function Header() {
 // -------------------------------------------------------------
 export function Hero() {
   return (
-    <section className="hero-section" id="home">
+    <section className="hero-section" id="home"><div className="hero-grid-pattern" aria-hidden="true" /><div className="hero-ambient-glow" aria-hidden="true" />
       <div className="page-wrap hero-layout">
         {/* Left Column: Headlines & CTAs */}
         <div className="hero-content">
           <div className="hero-eyebrow">
-            <span className="eyebrow-accent-bar" />
+            <span className="live-pulse-dot" />
             <span className="eyebrow-text">SOFTWARE DEVELOPMENT COMPANY</span>
           </div>
 
@@ -264,18 +268,22 @@ export function Hero() {
           </p>
 
           <div className="hero-cta-group">
-            <Link href="/contact" className="button button-blue button-lg">
+            <Link href="/contact" className="button button-blue button-lg hero-btn-primary">
               Start Your Project <ArrowRight size={16} />
             </Link>
-            <Link href="/#work" className="button button-outline button-lg">
+            <Link href="/work" className="button button-outline button-lg hero-btn-secondary">
               Explore Our Work
             </Link>
           </div>
 
-          <p className="hero-trust-line">
-            Custom-Built Solutions <span aria-hidden="true">·</span> Dedicated Development Team
-            <span aria-hidden="true">·</span> End-to-End Support
-          </p>
+          <div className="hero-audience-proof" aria-label="Trusted by 14 thousand audience">
+            <div className="hero-audience-avatars" aria-hidden="true">
+              <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=96&h=96&q=80" alt="" />
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=96&h=96&q=80" alt="" />
+              <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=96&h=96&q=80" alt="" />
+            </div>
+            <p>Trusted by <strong>14K+</strong> Audience &middot; MSME Verified Studio</p>
+          </div>
         </div>
 
         {/* Right Column: Verified Client Product Showcase */}
@@ -295,22 +303,26 @@ export function EngineeringTrustStrip() {
     {
       title: "100% Code Ownership",
       subtitle: "Full source code transfer, zero proprietary lock-in",
-      icon: <Lock size={18} className="text-sky-600" />,
+      icon: <Lock size={19} className="text-sky-500" />,
+      badge: "Full IP Rights",
     },
     {
       title: "Agreed Bug-Fix Warranty",
       subtitle: "Committed post-launch support and stability coverage",
-      icon: <ShieldCheck size={18} className="text-sky-600" />,
+      icon: <ShieldCheck size={19} className="text-emerald-500" />,
+      badge: "Guaranteed SLA",
     },
     {
       title: "Direct Engineering",
       subtitle: "Direct access to technical leads without agency fluff",
-      icon: <Terminal size={18} className="text-sky-600" />,
+      icon: <Terminal size={19} className="text-sky-500" />,
+      badge: "Direct Access",
     },
     {
       title: "Future-Ready Stack",
       subtitle: "Next.js 16, React Native, Node.js & PostgreSQL",
-      icon: <Layers size={18} className="text-sky-600" />,
+      icon: <Layers size={19} className="text-indigo-500" />,
+      badge: "Modern Architecture",
     },
   ];
 
@@ -320,13 +332,78 @@ export function EngineeringTrustStrip() {
         <div className="trust-grid">
           {commitments.map((item) => (
             <div key={item.title} className="trust-item">
-              <div className="trust-icon-box">{item.icon}</div>
+              <div className="trust-item-top"><div className="trust-icon-box">{item.icon}</div>{item.badge && <span className="trust-badge">{item.badge}</span>}</div>
               <div className="trust-body">
                 <strong>{item.title}</strong>
                 <span>{item.subtitle}</span>
               </div>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function SocialPresenceSection() {
+  const reels = [
+    { image: "/Video_2.jpeg", title: "MSME Verified", alt: "Patkar Infotech MSME verification reel" },
+    { image: "/Video_4.jpeg", title: "Building in Public", alt: "Building a software company reel" },
+    { image: "/VIEO.jpeg", title: "The Journey", alt: "Patkar Infotech founder sharing the company journey" },
+  ];
+  const [activeReel, setActiveReel] = useState(1);
+  const previous = (activeReel + reels.length - 1) % reels.length;
+  const next = (activeReel + 1) % reels.length;
+
+  return (
+    <section className="social-presence-section" aria-labelledby="social-presence-title">
+      <div className="page-wrap social-presence-wrap">
+        <span className="social-presence-eyebrow">Social Presence</span>
+        <h2 id="social-presence-title">Trusted by <strong>14K+</strong> People</h2>
+        <div className="social-presence-columns">
+        <div className="social-presence-videos">
+        <div className="social-reel-stage" aria-live="polite">
+          {[previous, activeReel, next].map((index, position) => (
+            <a
+              key={`${index}-${position}`}
+              className={`social-reel-card social-reel-card-${position}`}
+              href={siteConfig.social.instagram}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`View ${reels[index].title} on Instagram`}
+              tabIndex={position === 1 ? 0 : -1}
+            >
+              <Image src={reels[index].image} alt={reels[index].alt} fill sizes="(max-width: 640px) 280px, 300px" />
+              <span className="social-reel-play" aria-hidden="true">▶</span>
+            </a>
+          ))}
+        </div>
+        <div className="social-reel-controls" aria-label="Social posts carousel">
+          <button type="button" aria-label="Previous post" onClick={() => setActiveReel(previous)}><ChevronLeft size={20} /></button>
+          <div className="social-reel-dots">
+            {reels.map((reel, index) => (
+              <button key={reel.title} type="button" aria-label={`Show ${reel.title}`} aria-current={index === activeReel ? "true" : undefined} onClick={() => setActiveReel(index)} />
+            ))}
+          </div>
+          <button type="button" aria-label="Next post" onClick={() => setActiveReel(next)}><ChevronRight size={20} /></button>
+        </div>
+        </div>
+        <aside className="social-presence-platforms" aria-label="Follow Patkar Infotech">
+          <span className="social-platform-eyebrow">STAY CONNECTED</span>
+          <h3>Follow our journey.</h3>
+          <p>See what we’re building, behind the scenes and beyond the launch.</p>
+          {[
+            { name: "YouTube", count: siteConfig.socialCounts.youtube, metric: "Subscribers", href: siteConfig.social.youtube, icon: <YouTubeBrandIcon /> },
+            { name: "Facebook", count: siteConfig.socialCounts.facebook, metric: "Followers", href: siteConfig.social.facebook, icon: <FacebookBrandIcon /> },
+            { name: "Instagram", count: siteConfig.socialCounts.instagram, metric: "Followers", href: siteConfig.social.instagram, icon: <InstagramBrandIcon /> },
+          ].map((platform) => platform.href && (
+            <a key={platform.name} href={platform.href} target="_blank" rel="noreferrer" className="social-platform-link" aria-label={`Follow Patkar Infotech on ${platform.name} (opens in new tab)`}>
+              <span className="social-platform-icon" aria-hidden="true">{platform.icon}</span>
+              <span><strong>{platform.name}</strong><small className="social-platform-count">{platform.count && <b>{platform.count} </b>}{platform.metric}</small></span>
+              <ArrowUpRight size={18} aria-hidden="true" />
+            </a>
+          ))}
+        </aside>
         </div>
       </div>
     </section>
@@ -349,7 +426,7 @@ const technologyLogos = [
 
 function TechnologyLogoScroller() {
   return (
-    <div className="technology-logo-strip">
+    <section className="technology-logo-strip" aria-label="Tools we use">
       <h3 className="technology-logo-heading">Tools We Use to Make Your App or Website</h3>
       <div className="technology-logo-viewport" role="region" aria-label="Technology logos">
         <div className="technology-logo-track">
@@ -369,7 +446,7 @@ function TechnologyLogoScroller() {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -432,22 +509,31 @@ function TechPill({ name }: { name: string }) {
 
 export function ServicesSection() {
   return (
-    <section className="section services-section" id="services">
+    <section className="section services-section" id="services" aria-label="Our services">
       <div className="page-wrap">
-        <div className="section-header">
-          <div className="section-eyebrow">
-            <span className="eyebrow-accent-bar" />
-            <span>OUR SERVICES</span>
-          </div>
-          <h2 className="section-title">Technology Built Around Your Business.</h2>
-          <p className="section-subtitle">
-            Every business has different requirements. We build digital solutions based on what
-            you need to achieve.
-          </p>
+        <div className="service-product-options">
+          {[
+            services.find((item) => item.id === "website-development"),
+            services.find((item) => item.id === "custom-software-development"),
+          ].filter((item): item is (typeof services)[number] => Boolean(item)).map((item) => (
+            <article key={item.id} className="service-product-card">
+              <Link href={`/services/${item.slug}`} className="service-product-visual" aria-label={`Explore ${item.title}`}>
+                <span className="service-product-badge">MADE FOR YOUR BUSINESS</span>
+                <Image src={item.visualPreview} alt={`${item.title} illustration`} fill sizes="(max-width: 700px) 100vw, 50vw" />
+              </Link>
+              <div className="service-product-content">
+                <span className="service-category-tag">{item.category}</span>
+                <h3>{item.title}</h3>
+                <p>{item.summary}</p>
+                <div className="service-product-price"><span>Project pricing</span><strong>Custom quote</strong></div>
+                <Link href={`/services/${item.slug}`} className="service-product-cta">Explore Service <ArrowRight size={16} /></Link>
+              </div>
+            </article>
+          ))}
         </div>
 
         <div className="services-ten-grid">
-          {services.map((item, idx) => (
+          {services.filter((item) => !["website-development", "custom-software-development"].includes(item.id)).map((item, idx) => (
             <article key={item.id} className="service-standard-card">
               <div className="standard-card-header">
                 <div className="service-icon-box">{getServiceIcon(item.iconName)}</div>
@@ -480,8 +566,8 @@ export function ServicesSection() {
           ))}
         </div>
 
-        <TechnologyLogoScroller />
       </div>
+      <TechnologyLogoScroller />
     </section>
   );
 }
@@ -501,7 +587,7 @@ export function WorkSection() {
       <div className="page-wrap">
         <div className="section-header">
           <div className="section-eyebrow">
-            <span className="eyebrow-accent-bar" />
+            <span className="live-pulse-dot" />
             <span>OUR WORK</span>
           </div>
           <h2 className="section-title">Projects Built for Real Businesses</h2>
@@ -686,7 +772,7 @@ export function AboutSection() {
           {/* Left Column: Story & Principles */}
           <div className="about-content">
             <div className="section-eyebrow">
-              <span className="eyebrow-accent-bar" />
+              <span className="live-pulse-dot" />
               <span>ABOUT PATKAR INFOTECH</span>
             </div>
             <h2 className="section-title">
@@ -765,6 +851,47 @@ export function AboutSection() {
 // -------------------------------------------------------------
 // 8. WHY PATKAR INFOTECH? (4 Pillars + Comparison Table)
 // -------------------------------------------------------------
+function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const numberRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const node = numberRef.current;
+    if (!node) return;
+
+    let frame = 0;
+    let started = false;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting || started) return;
+      started = true;
+      observer.disconnect();
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        setCount(value);
+        return;
+      }
+
+      const startTime = performance.now();
+      const duration = 1200;
+      const step = (now: number) => {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const easedProgress = 1 - (1 - progress) ** 3;
+        setCount(Math.round(value * easedProgress));
+        if (progress < 1) frame = requestAnimationFrame(step);
+      };
+      frame = requestAnimationFrame(step);
+    }, { threshold: 0.35 });
+
+    observer.observe(node);
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, [value]);
+
+  return <strong ref={numberRef}>{count}{suffix}</strong>;
+}
+
 export function WhyPatkarSection() {
   const reasons = [
     {
@@ -798,9 +925,9 @@ export function WhyPatkarSection() {
       <div className="page-wrap">
         <div className="section-header why-section-header">
           <div className="section-eyebrow why-section-eyebrow">
-            <span className="eyebrow-accent-bar" />
+            <span className="live-pulse-dot" />
             <span>WHY PATKAR INFOTECH</span>
-            <span className="eyebrow-accent-bar" />
+            <span className="live-pulse-dot" />
           </div>
           <h2 className="section-title">Technology that works for your business.</h2>
           <p className="section-subtitle">
@@ -811,19 +938,19 @@ export function WhyPatkarSection() {
 
         <div className="why-proof-stats" aria-label="Patkar Infotech facts">
           <div className="why-proof-stat">
-            <strong>10</strong>
+            <CountUp value={10} />
             <span>Digital services<br />to support your goals</span>
           </div>
           <div className="why-proof-stat">
-            <strong>1</strong>
+            <CountUp value={1} />
             <span>Active client platform<br />featured in our work</span>
           </div>
           <div className="why-proof-stat">
-            <strong>100%</strong>
+            <CountUp value={100} suffix="%" />
             <span>Client source-code<br />ownership</span>
           </div>
           <div className="why-proof-stat">
-            <strong>3</strong>
+            <CountUp value={3} />
             <span>Core disciplines<br />web, apps &amp; software</span>
           </div>
         </div>
@@ -841,45 +968,6 @@ export function WhyPatkarSection() {
           ))}
         </div>
 
-        {/* The Patkar Difference Comparison Table */}
-        <div className="comparison-table-wrapper">
-          <div className="comparison-table-header">
-            <h4>The Patkar Infotech Difference</h4>
-            <p>Why business owners and founders choose our pragmatic engineering approach:</p>
-          </div>
-          <div className="comparison-grid">
-            <div className="comparison-row comparison-head">
-              <span className="col-factor">Evaluation Factor</span>
-              <span className="col-patkar">Patkar Infotech</span>
-              <span className="col-others">Generic Freelancer</span>
-              <span className="col-others">Traditional Agency</span>
-            </div>
-            <div className="comparison-row">
-              <span className="col-factor">Development Scope</span>
-              <span className="col-patkar font-bold text-sky-700" data-label="Patkar Infotech">✓ Tailored to exact business logic</span>
-              <span className="col-others col-freelancer" data-label="Generic Freelancer">✕ Pre-made script reselling</span>
-              <span className="col-others col-agency" data-label="Traditional Agency">✕ Bloated upsells &amp; delays</span>
-            </div>
-            <div className="comparison-row">
-              <span className="col-factor">Code Ownership</span>
-              <span className="col-patkar font-bold text-sky-700" data-label="Patkar Infotech">✓ 100% Owned by Client</span>
-              <span className="col-others col-freelancer" data-label="Generic Freelancer">✕ Unclear repository access</span>
-              <span className="col-others col-agency" data-label="Traditional Agency">✕ High licensing lock-in</span>
-            </div>
-            <div className="comparison-row">
-              <span className="col-factor">Communication</span>
-              <span className="col-patkar font-bold text-sky-700" data-label="Patkar Infotech">✓ Direct technical lead access</span>
-              <span className="col-others col-freelancer" data-label="Generic Freelancer">✕ Unpredictable availability</span>
-              <span className="col-others col-agency" data-label="Traditional Agency">✕ Filtered by non-technical reps</span>
-            </div>
-            <div className="comparison-row">
-              <span className="col-factor">Post-Launch Warranty</span>
-              <span className="col-patkar font-bold text-sky-700" data-label="Patkar Infotech">✓ Agreed bug-fix &amp; stability warranty</span>
-              <span className="col-others col-freelancer" data-label="Generic Freelancer">✕ Vanishes after final payment</span>
-              <span className="col-others col-agency" data-label="Traditional Agency">✕ Expensive hourly retainers</span>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
@@ -910,7 +998,7 @@ export function ProcessSection() {
       <div className="page-wrap">
         <div className="section-header">
           <div className="section-eyebrow">
-            <span className="eyebrow-accent-bar" />
+            <span className="live-pulse-dot" />
             <span>HOW WE WORK</span>
           </div>
           <h2 className="section-title">From Your First Idea to a Working Product</h2>
@@ -1043,7 +1131,7 @@ export function TechnologiesSection() {
       <div className="page-wrap">
         <div className="section-header">
           <div className="section-eyebrow">
-            <span className="eyebrow-accent-bar" />
+            <span className="live-pulse-dot" />
             <span>TECHNOLOGIES</span>
           </div>
           <h2 className="section-title">Tools We Use to Build.</h2>
@@ -1093,7 +1181,7 @@ export function ContactSection() {
         {/* Left Column: Heading and verified contact details */}
         <div className="contact-info-panel">
           <div className="section-eyebrow">
-            <span className="eyebrow-accent-bar" />
+            <span className="live-pulse-dot" />
             <span>PROJECT INQUIRY</span>
           </div>
           <h2 className="section-title">Have an Idea You Want to Build?</h2>
@@ -1235,7 +1323,7 @@ export function Footer() {
                 <Link href="/#services">Services</Link>
               </li>
               <li>
-                <Link href="/#work">Our Work</Link>
+                <Link href="/work">Our Work</Link>
               </li>
               <li>
                 <Link href="/#about">About Us</Link>
@@ -1319,10 +1407,11 @@ export default function Site() {
       <Header />
       <main>
         <Hero />
-        <EngineeringTrustStrip />
+        <WebsiteDemos />
         <ServicesSection />
-        <PartnershipMarquee />
+        <SocialPresenceSection />
         <ProcessSection />
+        <Testimonials />
         <ContactSection />
       </main>
       <Footer />

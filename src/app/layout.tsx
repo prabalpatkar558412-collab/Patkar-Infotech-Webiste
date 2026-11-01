@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
   description: "Patkar Infotech builds custom websites, mobile apps, web applications and business software for startups and businesses in India and worldwide. Discuss your project with our team.",
   alternates: { canonical: `${SITE_URL}/` },
-  icons: { icon: "/WhatsApp_Image_2026-10-19_at_2.23.42_AM-removebg-preview.png" },
+  icons: { icon: "/favicon.png" },
   openGraph: { title: "Patkar Infotech | Website, App & Software Development Company", description: "Patkar Infotech builds custom websites, mobile apps, web applications and business software for startups and businesses in India and worldwide. Discuss your project with our team.", type: "website", url: SITE_URL, siteName: "Patkar Infotech", images: [{ url: "/WhatsApp_Image_2026-10-19_at_2.23.42_AM-removebg-preview.png", alt: "Patkar Infotech" }] },
   twitter: { card: "summary_large_image", title: "Patkar Infotech | Website, App & Software Development Company", description: "Patkar Infotech builds custom websites, mobile apps, web applications and business software for startups and businesses in India and worldwide. Discuss your project with our team.", images: ["/WhatsApp_Image_2026-10-19_at_2.23.42_AM-removebg-preview.png"] },
   robots: { index: true, follow: true },

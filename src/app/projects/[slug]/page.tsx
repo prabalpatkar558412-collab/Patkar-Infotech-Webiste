@@ -39,7 +39,7 @@ export default async function ProjectPage({
         <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Our Work", path: "/work" }, { name: project.title, path: `/projects/${project.slug}` }]} />
         {/* Back Link */}
         <div className="page-wrap case-back-bar">
-          <Link href="/#work" className="case-back-link">
+          <Link href="/work" className="case-back-link">
             <ArrowLeft size={14} /> Back to Portfolio
           </Link>
         </div>

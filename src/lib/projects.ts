@@ -13,6 +13,7 @@ export interface ProjectItem {
     | "business-management"
     | "document-tools"
     | "ecommerce"
+    | "electricals"
     | "delivery-services";
   shortDescription: string;
   summary: string;
@@ -82,6 +83,29 @@ export const projects: ProjectItem[] = [
     techStack: ["React", "TypeScript", "Node.js", "Tailwind CSS"],
     previewImage: "/images/services/business-websites.svg",
     accentColor: "#0879c9",
+  },
+  {
+    slug: "jharkhand-electricals-website",
+    projectType: "website",
+    title: "Jharkhand Electricals Website",
+    clientOrBrand: "Jharkhand Electricals",
+    isClientWork: true,
+    statusBadge: "Client Project · Live Website",
+    category: "Electrical Business Websites",
+    categorySlug: "electricals",
+    shortDescription:
+      "A live business website for Jharkhand Electricals, giving customers an online place to learn about the company and its electrical offering.",
+    summary:
+      "The Jharkhand Electricals website introduces the business online and helps customers explore its electrical products and services.",
+    problem:
+      "The business needed a dedicated online presence where customers could find its information beyond an in-person store visit.",
+    solution:
+      "A purpose-built company website presents Jharkhand Electricals and provides a direct path for customers to explore the live experience.",
+    keyFeatures: [],
+    techStack: [],
+    liveUrl: "https://www.jharkhandelectricals.com/",
+    previewImage: "/images/services/business-websites.svg",
+    accentColor: "#e88924",
   },
   {
     slug: "pulseops-business-management-erp",

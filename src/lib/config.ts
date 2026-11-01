@@ -12,6 +12,7 @@ export interface CompanyConfig {
   addressFormatted: string;
   whatsappNumber: string;
   whatsappDefaultMessage: string;
+  socialCounts: { youtube: string; facebook: string; instagram: string };
   social: {
     instagram: string;
     facebook?: string;
@@ -25,6 +26,12 @@ export interface CompanyConfig {
 }
 
 export const siteConfig: CompanyConfig = {
+  // Set approved public counts here, e.g. "14K+".
+  socialCounts: {
+    youtube: process.env.NEXT_PUBLIC_YOUTUBE_SUBSCRIBERS || "400",
+    facebook: process.env.NEXT_PUBLIC_FACEBOOK_FOLLOWERS || "14,000",
+    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_FOLLOWERS || "5,000",
+  },
   name: "Patkar Infotech",
   tagline: "Solutions That Empower",
   brandMessage: "We build websites, apps and software around your business.",
@@ -51,8 +58,8 @@ export const siteConfig: CompanyConfig = {
   navigation: [
     { label: "Home", href: "/#home" },
     { label: "Services", href: "/#services" },
-    { label: "Tools", href: "/#technologies" },
-    { label: "Our Work", href: "/#work" },
+    { label: "Tools", href: "/tools" },
+    { label: "Our Work", href: "/work" },
     { label: "About Us", href: "/#about" },
     { label: "Our Process", href: "/#process" },
     { label: "Contact", href: "/#contact" },
