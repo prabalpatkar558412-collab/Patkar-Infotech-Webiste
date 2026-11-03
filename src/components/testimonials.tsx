@@ -3,12 +3,18 @@ import { Star } from "lucide-react";
 import { testimonials, type Testimonial } from "@/lib/testimonials";
 import styles from "./testimonials.module.css";
 
+// Cell order in the generated 4-by-3 sample portrait sheet.
+const samplePortraits = ["nikhil", "vikram", "neha", "rahul", "arjun", "priya", "sneha", "amit", "kavya", "rohit", "ananya", "sanjay"];
+
 function ReviewCard({ review }: { review: Testimonial }) {
   const initials = review.name.split(" ").map((part) => part[0]).slice(0, 2).join("");
+  const portrait = samplePortraits.indexOf(review.id);
   return (
     <li className={styles.card}>
       <div className={styles.avatar}>
-        {review.image ? (
+        {portrait >= 0 ? (
+          <span className={styles.samplePortrait} role="img" aria-label={`AI-generated sample portrait for ${review.name}`} style={{ backgroundPosition: `${(portrait % 4) * 100 / 3}% ${Math.floor(portrait / 4) * 50}%` }} />
+        ) : review.image ? (
           <Image src={review.image} alt={`Sample profile portrait for ${review.name}`} width={66} height={66} sizes="(max-width: 640px) 52px, 66px" />
         ) : <span aria-hidden="true">{initials}</span>}
       </div>

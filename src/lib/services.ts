@@ -69,7 +69,7 @@ export const services: ServiceItem[] = [
     ],
     techStack: ["React Native", "TypeScript", "Firebase", "REST APIs", "Node.js"],
     iconName: "Smartphone",
-    visualPreview: "/images/services/mobile-applications.svg",
+    visualPreview: "/Gemini_Generated_Image_is4wdlis4wdlis4w.png",
   },
   {
     id: "custom-software-development",
@@ -125,7 +125,7 @@ export const services: ServiceItem[] = [
     ],
     techStack: ["React", "Next.js", "PostgreSQL", "Tailwind CSS", "REST APIs"],
     iconName: "LayoutDashboard",
-    visualPreview: "/images/services/admin-panels.svg",
+    visualPreview: "/Powerful%20Admin%20Dashboards%20for%20Every%20Business.png",
   },
   {
     id: "ecommerce-development",
@@ -153,7 +153,7 @@ export const services: ServiceItem[] = [
     ],
     techStack: ["Next.js", "TypeScript", "PostgreSQL", "Supabase", "Tailwind CSS"],
     iconName: "ShoppingBag",
-    visualPreview: "/images/services/e-commerce.svg",
+    visualPreview: "/Shopora%20E-Commerce%20Workspace%20Showcase.png",
   },
   {
     id: "business-management-systems",
@@ -181,7 +181,7 @@ export const services: ServiceItem[] = [
     ],
     techStack: ["PostgreSQL", "Node.js", "React", "Next.js", "REST APIs"],
     iconName: "Layers",
-    visualPreview: "/images/services/business-systems.svg",
+    visualPreview: "/BizFlow%20ERP%20Office%20Dashboard%20Showcase.png",
   },
   {
     id: "ui-ux-design",
@@ -196,7 +196,7 @@ export const services: ServiceItem[] = [
     deliverables: ["Product UX and User Flows", "Web & Mobile UI Design", "Interactive Prototypes", "Design Systems"],
     techStack: ["Figma", "Design Systems", "Prototyping"],
     iconName: "Sparkles",
-    visualPreview: "/images/services/business-websites.svg",
+    visualPreview: "/Modern%20Shopora%20UI_UX%20Workspace.png",
   },
   {
     id: "api-backend-development",
@@ -211,7 +211,7 @@ export const services: ServiceItem[] = [
     deliverables: ["REST APIs & Integrations", "Database Design", "Authentication Systems", "Payment & Notification Workflows"],
     techStack: ["Node.js", "PostgreSQL", "REST APIs", "TypeScript"],
     iconName: "Database",
-    visualPreview: "/images/services/custom-software.svg",
+    visualPreview: "/API%20Backend%20Dashboard%20Workspace.png",
   },
   {
     id: "cloud-devops",
@@ -226,7 +226,7 @@ export const services: ServiceItem[] = [
     deliverables: ["Cloud Hosting Setup", "CI/CD Pipelines", "Monitoring & Alerts", "Backup & Recovery Planning"],
     techStack: ["AWS", "Docker", "CI/CD", "Linux"],
     iconName: "Server",
-    visualPreview: "/images/services/admin-panels.svg",
+    visualPreview: "/CloudOps%20Dashboard%20Office%20Setup.png",
   },
   {
     id: "maintenance-support",
@@ -241,6 +241,6 @@ export const services: ServiceItem[] = [
     deliverables: ["Planned Maintenance", "Bug Fixes & Troubleshooting", "Security Updates", "Performance Reviews"],
     techStack: ["Monitoring", "Security", "Performance"],
     iconName: "ShieldCheck",
-    visualPreview: "/images/services/business-systems.svg",
+    visualPreview: "/Modern%20System%20Maintenance%20Dashboard.png",
   },
 ];

@@ -47,6 +47,8 @@ import { ProjectInquiryForm } from "./inquiry-form";
 import { FloatingWhatsAppButton } from "./whatsapp-button";
 import { Testimonials } from "./testimonials";
 import { WebsiteDemos } from "./website-demos";
+import { FounderSection } from "./founder-section";
+import serviceCards from "./service-cards.module.css";
 
 function InstagramBrandIcon() {
   return (
@@ -352,6 +354,13 @@ export function SocialPresenceSection() {
     { image: "/VIEO.jpeg", title: "The Journey", alt: "Patkar Infotech founder sharing the company journey" },
   ];
   const [activeReel, setActiveReel] = useState(1);
+  const [reelsHovered, setReelsHovered] = useState(false);
+  const reelSwipeStart = useRef<number | null>(null);
+  useEffect(() => {
+    if (reelsHovered || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setInterval(() => setActiveReel((current) => (current + 1) % 3), 4000);
+    return () => window.clearInterval(timer);
+  }, [reelsHovered]);
   const previous = (activeReel + reels.length - 1) % reels.length;
   const next = (activeReel + 1) % reels.length;
 
@@ -362,10 +371,12 @@ export function SocialPresenceSection() {
         <h2 id="social-presence-title">Trusted by <strong>14K+</strong> People</h2>
         <div className="social-presence-columns">
         <div className="social-presence-videos">
-        <div className="social-reel-stage" aria-live="polite">
-          {[previous, activeReel, next].map((index, position) => (
+        <div className="social-reel-stage" onMouseEnter={() => setReelsHovered(true)} onMouseLeave={() => setReelsHovered(false)} onFocusCapture={() => setReelsHovered(true)} onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setReelsHovered(false); }} onTouchStart={(event) => { reelSwipeStart.current = event.touches[0].clientX; }} onTouchEnd={(event) => { if (reelSwipeStart.current === null) return; const distance = event.changedTouches[0].clientX - reelSwipeStart.current; if (Math.abs(distance) > 40) setActiveReel(distance < 0 ? next : previous); reelSwipeStart.current = null; }}>
+          {reels.map((reel, index) => {
+            const position = index === activeReel ? 1 : index === previous ? 0 : 2;
+            return (
             <a
-              key={`${index}-${position}`}
+              key={reel.image}
               className={`social-reel-card social-reel-card-${position}`}
               href={siteConfig.social.instagram}
               target="_blank"
@@ -376,7 +387,7 @@ export function SocialPresenceSection() {
               <Image src={reels[index].image} alt={reels[index].alt} fill sizes="(max-width: 640px) 280px, 300px" />
               <span className="social-reel-play" aria-hidden="true">▶</span>
             </a>
-          ))}
+          ); })}
         </div>
         <div className="social-reel-controls" aria-label="Social posts carousel">
           <button type="button" aria-label="Previous post" onClick={() => setActiveReel(previous)}><ChevronLeft size={20} /></button>
@@ -399,7 +410,7 @@ export function SocialPresenceSection() {
           ].map((platform) => platform.href && (
             <a key={platform.name} href={platform.href} target="_blank" rel="noreferrer" className="social-platform-link" aria-label={`Follow Patkar Infotech on ${platform.name} (opens in new tab)`}>
               <span className="social-platform-icon" aria-hidden="true">{platform.icon}</span>
-              <span><strong>{platform.name}</strong><small className="social-platform-count">{platform.count && <b>{platform.count} </b>}{platform.metric}</small></span>
+              <span><strong>{platform.name}</strong><small className="social-platform-count">{platform.count && <b>{Number.isFinite(Number(platform.count.replaceAll(",", ""))) ? <CountUp value={Number(platform.count.replaceAll(",", ""))} formatted /> : platform.count} </b>}{platform.metric}</small></span>
               <ArrowUpRight size={18} aria-hidden="true" />
             </a>
           ))}
@@ -511,35 +522,21 @@ export function ServicesSection() {
   return (
     <section className="section services-section" id="services" aria-label="Our services">
       <div className="page-wrap">
-        <div className="services-ten-grid">
+        <div className={serviceCards.grid}>
           {services.filter((item) => !["website-development", "custom-software-development"].includes(item.id)).map((item, idx) => (
-            <article key={item.id} className="service-standard-card">
-              <div className="standard-card-header">
-                <div className="service-icon-box">{getServiceIcon(item.iconName)}</div>
-                <span className="service-index-number">{String(idx + 1).padStart(2, "0")}</span>
-              </div>
-              <span className="service-category-tag">{item.category}</span>
-              <h3 className="standard-card-title">{item.title}</h3>
-              <p className="standard-card-summary">{item.summary}</p>
-              <div className="standard-card-deliverables">
-                <ul>
-                  {item.deliverables.slice(0, 2).map((deliverable) => (
-                    <li key={deliverable}>
-                      <Check size={13} className="text-sky-600 flex-shrink-0" />
-                      <span>{deliverable}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="card-footer-action">
-                <div className="tech-pills-row">
-                  {item.techStack.slice(0, 2).map((tech) => (
-                    <TechPill key={tech} name={tech} />
-                  ))}
+            <article key={item.id} className={serviceCards.card}>
+              <Link href={`/services/${item.slug}`} className={serviceCards.visual} aria-label={`Explore ${item.title}`} tabIndex={-1}>
+                <Image src={item.visualPreview} alt="" width={720} height={400} sizes="(max-width: 600px) 100vw, (max-width: 1100px) 50vw, 33vw" />
+                <span className={serviceCards.number}>{String(idx + 1).padStart(2, "0")}</span>
+              </Link>
+              <div className={serviceCards.body}>
+                <p className={serviceCards.category}>{item.category}</p>
+                <h3><Link href={`/services/${item.slug}`}>{item.title}</Link></h3>
+                <p className={serviceCards.summary}>{item.summary}</p>
+                <div className={serviceCards.footer}>
+                  <Link href={`/services/${item.slug}`} className={serviceCards.link}>Explore service <ArrowRight size={15} aria-hidden="true" /></Link>
+                  <span className={serviceCards.technology}>{item.techStack[0]}</span>
                 </div>
-                <Link href={`/services/${item.slug}`} className="service-detail-link">
-                  <span>Details</span> <ArrowUpRight size={14} />
-                </Link>
               </div>
             </article>
           ))}
@@ -612,15 +609,6 @@ export function WorkSection() {
           ) : visibleProjects.map((project) => <ProjectCard key={project.slug} project={project} />)}
         </div>
 
-        {/* Credibility Note */}
-        <div className="work-transparency-note">
-          <p>
-            <strong>Note on Portfolio:</strong> CareOn24 is an active, live client healthcare
-            website. Demonstration projects reflect real architectural prototypes developed by
-            Patkar Infotech to illustrate domain capabilities without disclosing confidential
-            client agreements.
-          </p>
-        </div>
       </div>
     </section>
   );
@@ -832,7 +820,7 @@ export function AboutSection() {
 // -------------------------------------------------------------
 // 8. WHY PATKAR INFOTECH? (4 Pillars + Comparison Table)
 // -------------------------------------------------------------
-function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
+function CountUp({ value, suffix = "", formatted = false }: { value: number; suffix?: string; formatted?: boolean }) {
   const [count, setCount] = useState(0);
   const numberRef = useRef<HTMLElement>(null);
 
@@ -870,7 +858,7 @@ function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
     };
   }, [value]);
 
-  return <strong ref={numberRef}>{count}{suffix}</strong>;
+  return <strong ref={numberRef} aria-label={`${formatted ? value.toLocaleString("en-US") : value}${suffix}`}>{formatted ? count.toLocaleString("en-US") : count}{suffix}</strong>;
 }
 
 export function WhyPatkarSection() {
@@ -1393,6 +1381,7 @@ export default function Site() {
         <SocialPresenceSection />
         <ProcessSection />
         <Testimonials />
+        <FounderSection />
         <ContactSection />
       </main>
       <Footer />

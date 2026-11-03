@@ -1,0 +1,25 @@
+.section { padding: clamp(40px, 6vw, 80px) 0; background: #fff; border-top: 1px solid #edf1f6; }
+.layout { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: center; gap: clamp(28px, 4vw, 60px); }
+.portrait { position: relative; aspect-ratio: 1 / 1.06; margin: 0; overflow: hidden; border-radius: 24px; background: #edf4fa; box-shadow: 0 18px 36px -20px #132e4c66; }
+.portrait img { object-fit: cover; object-position: center 35%; }
+.portrait figcaption { position: absolute; left: 18px; bottom: 18px; display: inline-flex; align-items: center; gap: 8px; max-width: calc(100% - 36px); border-radius: 999px; padding: 8px 13px; background: #ffffffed; color: var(--navy); font-size: 12px; font-weight: 700; }
+.portrait figcaption span { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+.eyebrow { margin: 0 0 12px; color: var(--blue); font-size: 11px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+.content h2 { margin: 0; color: var(--navy); font-size: clamp(28px, 2.6vw, 38px); line-height: 1.2; letter-spacing: -.035em; }
+.role { margin: 12px 0 24px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+.story { color: var(--muted); font-size: 15px; line-height: 1.85; }
+.story p { margin: 0 0 10px; }
+.story strong { color: var(--navy); font-weight: 650; }
+.content blockquote { margin: 24px 0; padding: 2px 0 2px 20px; border-left: 3px solid var(--blue); color: var(--navy); font-size: 17px; font-weight: 600; line-height: 1.65; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.actions a { min-height: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; border-radius: 999px; padding: 13px 24px; font-size: 14px; font-weight: 700; text-decoration: none; transition: background .2s, border-color .2s; }
+.primary { background: var(--blue); color: #fff; border: 1px solid var(--blue); }
+.primary:hover { background: var(--navy); border-color: var(--navy); }
+.secondary { background: #fff; border: 1px solid #dfe6ef; color: var(--navy); }
+.secondary:hover { background: #f3f7fc; border-color: #b7cbe4; }
+.actions a:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+@media (max-width: 760px) {
+  .layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .portrait { width: 100%; max-width: 520px; justify-self: center; }
+  .content h2 br { display: none; }
+}

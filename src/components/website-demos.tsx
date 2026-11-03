@@ -15,7 +15,7 @@ export function WebsiteDemos({ showHeader = true }: { showHeader?: boolean }) {
           <p>{hasVideos ? "Watch short videos of some of our recent websites." : "A closer look at our recent client websites."}</p>
         </header>
       </div>}
-      <div className={styles.gallery} tabIndex={0} role="region" aria-label="Client website previews. Scroll horizontally to explore.">
+      <div className={styles.gallery} role="region" aria-label="Client website previews">
         {websiteDemos.map((demo) => {
           const project = projects.find((item) => item.slug === demo.slug);
           if (!project && !demo.video) return null;
