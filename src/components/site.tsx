@@ -511,27 +511,6 @@ export function ServicesSection() {
   return (
     <section className="section services-section" id="services" aria-label="Our services">
       <div className="page-wrap">
-        <div className="service-product-options">
-          {[
-            services.find((item) => item.id === "website-development"),
-            services.find((item) => item.id === "custom-software-development"),
-          ].filter((item): item is (typeof services)[number] => Boolean(item)).map((item) => (
-            <article key={item.id} className="service-product-card">
-              <Link href={`/services/${item.slug}`} className="service-product-visual" aria-label={`Explore ${item.title}`}>
-                <span className="service-product-badge">MADE FOR YOUR BUSINESS</span>
-                <Image src={item.visualPreview} alt={`${item.title} illustration`} fill sizes="(max-width: 700px) 100vw, 50vw" />
-              </Link>
-              <div className="service-product-content">
-                <span className="service-category-tag">{item.category}</span>
-                <h3>{item.title}</h3>
-                <p>{item.summary}</p>
-                <div className="service-product-price"><span>Project pricing</span><strong>Custom quote</strong></div>
-                <Link href={`/services/${item.slug}`} className="service-product-cta">Explore Service <ArrowRight size={16} /></Link>
-              </div>
-            </article>
-          ))}
-        </div>
-
         <div className="services-ten-grid">
           {services.filter((item) => !["website-development", "custom-software-development"].includes(item.id)).map((item, idx) => (
             <article key={item.id} className="service-standard-card">
@@ -624,11 +603,13 @@ export function WorkSection() {
 
         <div
           id="project-type-grid"
-          className="projects-grid"
+          className={activeProjectType === "website" ? undefined : "projects-grid"}
           role="tabpanel"
           aria-labelledby={activeProjectType === "website" ? "website-projects-tab" : "app-projects-tab"}
         >
-          {visibleProjects.map((project) => <ProjectCard key={project.slug} project={project} />)}
+          {activeProjectType === "website" ? (
+            <WebsiteDemos showHeader={false} />
+          ) : visibleProjects.map((project) => <ProjectCard key={project.slug} project={project} />)}
         </div>
 
         {/* Credibility Note */}

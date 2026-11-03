@@ -10,7 +10,6 @@ import {
   Building,
   User,
   Layers,
-  IndianRupee,
   HelpCircle,
 } from "lucide-react";
 import { siteConfig } from "@/lib/config";
@@ -361,28 +360,6 @@ export function ProjectInquiryForm() {
               )}
             </div>
 
-            {/* Estimated Budget */}
-            <div className="form-group">
-              <label htmlFor="budget" className="form-label">
-                Estimated Budget (Optional)
-              </label>
-              <div className="input-with-icon">
-                <IndianRupee size={15} className="input-icon" />
-                <select
-                  id="budget"
-                  name="budget"
-                  value={formData.budget}
-                  onChange={handleChange}
-                  className="form-select"
-                >
-                  <option value="">Flexible / To be discussed</option>
-                  <option value="₹25,000 – ₹50,000">₹25,000 – ₹50,000 (Small / MVP)</option>
-                  <option value="₹50,000 – ₹1,00,000">₹50,000 – ₹1,00,000 (Standard)</option>
-                  <option value="₹1,00,000 – ₹2,50,000">₹1,00,000 – ₹2,50,000 (Comprehensive)</option>
-                  <option value="₹2,50,000+">₹2,50,000+ (Full Enterprise Suite)</option>
-                </select>
-              </div>
-            </div>
           </div>
 
           {/* Project Description */}
