@@ -5721,3 +5721,68 @@ body { color: var(--ink); background: var(--paper); }
 .social-platform-link .social-platform-count { margin-top: 5px; font-size: 12px; }
 .social-platform-count b { font-size: 20px; font-weight: 750; color: var(--navy); }
 .social-platform-count b strong { display: inline; font: inherit; color: inherit; font-variant-numeric: tabular-nums; }
+
+/* Client brand strip */
+.client-brands {
+  padding: 36px 0;
+  background: #f7f7f9;
+  border-block: 1px solid #eceef2;
+}
+.client-brands-inner {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  align-items: center;
+  gap: 40px;
+}
+.client-brands-heading p {
+  margin: 0 0 10px;
+  color: #f45b35;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+.client-brands-heading h2 {
+  margin: 0;
+  color: #23334b;
+  font-size: clamp(23px, 2.1vw, 28px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -.7px;
+}
+.client-brands-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.client-brand-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 88px;
+  padding: 18px;
+  border: 1px solid #eceef2;
+  border-radius: 15px;
+  background: #fff;
+  color: #203755;
+  text-align: center;
+  text-decoration: none;
+  font-size: clamp(15px, 1.4vw, 20px);
+  font-weight: 800;
+  line-height: 1.25;
+  transition: border-color .2s, box-shadow .2s;
+}
+.client-brand-card:hover { border-color: #a9c9ed; box-shadow: 0 5px 18px #18375b0a; }
+.client-brand-card:focus-visible { outline: 3px solid #1686dc; outline-offset: 3px; }
+@media (max-width: 800px) {
+  .client-brands-inner { grid-template-columns: 1fr; gap: 24px; }
+  .client-brands-heading { text-align: center; }
+  .client-brands-heading h2 br { display: none; }
+}
+@media (max-width: 480px) {
+  .client-brands { padding: 28px 0; }
+  .client-brands-list { gap: 8px; }
+  .client-brand-card { padding: 12px 8px; font-size: 13px; min-height: 88px; border-radius: 12px; }
+}

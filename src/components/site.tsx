@@ -1367,6 +1367,30 @@ export function Footer() {
   );
 }
 
+function ClientBrands() {
+  const brands = projects.filter((project) => project.isClientWork);
+
+  return (
+    <section className="client-brands" aria-labelledby="client-brands-title">
+      <div className="page-wrap client-brands-inner">
+        <div className="client-brands-heading">
+          <p>OUR BRAND PARTNERS</p>
+          <h2 id="client-brands-title">We Are Working<br />With Brands</h2>
+        </div>
+        <ul className="client-brands-list">
+          {brands.map((brand) => (
+            <li key={brand.slug}>
+              <Link href={`/projects/${brand.slug}`} className="client-brand-card">
+                <span>{brand.clientOrBrand}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 // -------------------------------------------------------------
 // MAIN HOME PAGE EXPORT
 // -------------------------------------------------------------
@@ -1376,6 +1400,7 @@ export default function Site() {
       <Header />
       <main>
         <Hero />
+        <ClientBrands />
         <WebsiteDemos />
         <ServicesSection />
         <SocialPresenceSection />

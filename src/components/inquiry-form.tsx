@@ -164,18 +164,28 @@ export function ProjectInquiryForm() {
     }
   };
 
-  // Build prefilled WhatsApp message
+  // Keep the message readable in both WhatsApp's composer and sent messages.
   const constructWhatsAppMessage = () => {
     const lines = [
-      `*New Project Inquiry for Patkar Infotech*`,
-      `*Name:* ${formData.name || "Client"}`,
-      formData.company ? `*Company:* ${formData.company}` : "",
-      `*Phone:* ${formData.phone || "Not specified"}`,
-      `*Email:* ${formData.email || "Not specified"}`,
-      `*Project Type:* ${formData.projectType || "General Inquiry"}`,
-      formData.budget ? `*Budget:* ${formData.budget}` : "",
-      `*Requirements:* ${formData.description || "Looking to discuss project details"}`,
-    ].filter(Boolean);
+      "New Project Inquiry | Patkar Infotech",
+      "",
+      "Hello Patkar Infotech team,",
+      "I would like to discuss a project. Here are my details:",
+      "",
+      `Full Name: ${formData.name.trim()}`,
+      `Business / Company: ${formData.company.trim()}`,
+      `Phone / WhatsApp: ${formData.phone.trim()}`,
+      `Email: ${formData.email.trim()}`,
+      "",
+      `Project Type: ${formData.projectType}`,
+      ...(formData.budget.trim() ? [`Budget: ${formData.budget.trim()}`] : []),
+      "",
+      "Project Requirements:",
+      formData.description.trim(),
+      "",
+      "Please let me know the next steps, estimated timeline and quotation.",
+      "Thank you!",
+    ];
 
     return encodeURIComponent(lines.join("\n"));
   };
