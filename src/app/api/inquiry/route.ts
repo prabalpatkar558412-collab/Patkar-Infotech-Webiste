@@ -4,7 +4,7 @@ import path from "path";
 
 export interface InquiryPayload {
   name: string;
-  company?: string;
+  company: string;
   email: string;
   phone: string;
   projectType: string;
@@ -21,6 +21,10 @@ export async function POST(request: Request) {
 
     if (!data.name || data.name.trim().length < 2) {
       errors.name = "Please provide your full name (minimum 2 characters).";
+    }
+
+    if (typeof data.company !== "string" || !data.company.trim()) {
+      errors.company = "Please enter your business or company name.";
     }
 
     if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {

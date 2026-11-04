@@ -47,6 +47,7 @@ interface FormDataState {
 
 interface FormErrors {
   name?: string;
+  company?: string;
   email?: string;
   phone?: string;
   projectType?: string;
@@ -77,6 +78,10 @@ export function ProjectInquiryForm() {
 
     if (!formData.name.trim() || formData.name.trim().length < 2) {
       newErrors.name = "Please provide your full name (at least 2 characters).";
+    }
+
+    if (!formData.company.trim()) {
+      newErrors.company = "Please enter your business or company name.";
     }
 
     if (
@@ -263,7 +268,7 @@ export function ProjectInquiryForm() {
             {/* Business / Company Name */}
             <div className="form-group">
               <label htmlFor="company" className="form-label">
-                Business or Company Name
+                Business or Company Name <span className="req">*</span>
               </label>
               <div className="input-with-icon">
                 <Building size={15} className="input-icon" />
@@ -274,10 +279,12 @@ export function ProjectInquiryForm() {
                   placeholder="e.g. Chaudhary Enterprises"
                   value={formData.company}
                   onChange={handleChange}
-                  className="form-input"
+                  className={`form-input ${errors.company ? "has-error" : ""}`}
+                  required
                   autoComplete="organization"
                 />
               </div>
+              {errors.company && <span className="field-error">{errors.company}</span>}
             </div>
           </div>
 
@@ -400,7 +407,12 @@ export function ProjectInquiryForm() {
               target="_blank"
               rel="noreferrer"
               className="button button-whatsapp-secondary"
-              title="Chat directly with our engineering team on WhatsApp"
+              onClick={(event) => {
+                if (!validate()) {
+                  event.preventDefault();
+                }
+              }}
+              title="Fill in all details to send your inquiry on WhatsApp"
             >
               <WhatsAppIcon /> Direct WhatsApp Inquiry
             </a>
