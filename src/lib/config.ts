@@ -57,11 +57,11 @@ export const siteConfig: CompanyConfig = {
   },
   navigation: [
     { label: "Home", href: "/#home" },
-    { label: "Services", href: "/#services" },
-    { label: "Tools", href: "/tools" },
+    { label: "App Development", href: "/services/mobile-app-development" },
+    { label: "Website Development", href: "/services/website-development" },
+    { label: "Custom Software", href: "/services/custom-software-development" },
     { label: "Our Work", href: "/work" },
     { label: "About Us", href: "/#about" },
-    { label: "Our Process", href: "/#process" },
     { label: "Contact", href: "/#contact" },
   ],
 };

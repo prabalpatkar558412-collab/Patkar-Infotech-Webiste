@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Footer, Header, TechnologiesSection } from "@/components/site";
+import { Footer, Header } from "@/components/site";
 import { FloatingWhatsAppButton } from "@/components/whatsapp-button";
 
 export const metadata: Metadata = {
@@ -12,9 +12,6 @@ export default function ToolsPage() {
   return (
     <>
       <Header />
-      <main>
-        <TechnologiesSection />
-      </main>
       <Footer />
       <FloatingWhatsAppButton />
     </>

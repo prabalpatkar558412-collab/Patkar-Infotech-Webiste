@@ -1,5 +1,5 @@
 .section { padding: 0 0 32px; background: linear-gradient(180deg, #fff 65%, #f4f9ff); min-width: 0; }
-.header { text-align: center; margin-bottom: 24px; }
+.header { text-align: center; padding-top: clamp(32px, 4vw, 48px); margin-bottom: 24px; }
 .eyebrow { display: inline-block; color: #1769c2; background: #edf5ff; border: 1px solid #d5e6fa; border-radius: 999px; padding: 5px 14px; font-size: 14px; line-height: 1.5; font-weight: 700; margin: 0 0 14px; }
 .header h2 { font-size: clamp(27px, 3vw, 40px); letter-spacing: -.04em; margin: 0 0 12px; }
 .header h2 span { color: var(--blue); }

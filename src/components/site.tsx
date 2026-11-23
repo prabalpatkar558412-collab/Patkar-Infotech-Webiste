@@ -139,18 +139,19 @@ export function Header() {
 
   const navLinks = [
     { label: "Home", href: "/", id: "home" },
-    { label: "Services", href: "/services", id: "services" },
-    { label: "Tools", href: "/tools", id: "tools" },
+    { label: "App Development", href: "/services/mobile-app-development", id: "apps" },
+    { label: "Website Development", href: "/services/website-development", id: "websites" },
+    { label: "Custom Software", href: "/services/custom-software-development", id: "software" },
     { label: "Our Work", href: "/work", id: "work" },
     { label: "About", href: "/about", id: "about" },
-    { label: "Process", href: "/process", id: "process" },
     { label: "Contact", href: "/contact", id: "contact" },
   ];
-  const activeNav = pathname.startsWith("/services") ? "services"
+  const activeNav = pathname.startsWith("/services/mobile-app-development") ? "apps"
+    : pathname.startsWith("/services/website-development") ? "websites"
+    : pathname.startsWith("/services/custom-software-development") ? "software"
+    : pathname.startsWith("/services") ? "services"
     : pathname.startsWith("/work") || pathname.startsWith("/projects") ? "work"
-        : pathname.startsWith("/tools") ? "tools"
           : pathname.startsWith("/about") ? "about"
-        : pathname.startsWith("/process") ? "process"
           : pathname.startsWith("/contact") ? "contact" : "home";
 
   return (
@@ -1059,82 +1060,6 @@ export function ProcessSection() {
           </nav>
         </div>
 
-      </div>
-    </section>
-  );
-}
-
-// -------------------------------------------------------------
-// 10. TECHNOLOGIES
-// -------------------------------------------------------------
-export function TechnologiesSection() {
-  const techCategories = [
-    {
-      category: "Frontend & Web",
-      items: [
-        { name: "React", description: "Interactive components & reactive state" },
-        { name: "Next.js", description: "SSR, SSG, server components & edge APIs" },
-        { name: "TypeScript", description: "Strict type safety preventing runtime bugs" },
-      ],
-    },
-    {
-      category: "Mobile Apps",
-      items: [
-        { name: "React Native", description: "Cross-platform native iOS & Android applications" },
-        { name: "Firebase", description: "Push notifications & instant auth flows" },
-        { name: "REST APIs", description: "Synchronized backend communication" },
-      ],
-    },
-    {
-      category: "Backend & Database",
-      items: [
-        { name: "Node.js", description: "High-throughput asynchronous API microservices" },
-        { name: "PostgreSQL", description: "ACID-compliant relational database storage" },
-        { name: "Supabase", description: "Scalable Postgres with realtime subscriptions" },
-      ],
-    },
-  ];
-
-  return (
-    <section className="section tech-section" id="technologies">
-      <div className="page-wrap">
-        <div className="section-header">
-          <div className="section-eyebrow">
-            <span className="live-pulse-dot" />
-            <span>TECHNOLOGIES</span>
-          </div>
-          <h2 className="section-title">Tools We Use to Build.</h2>
-          <p className="section-subtitle">
-            Technologies selected for stability, security, maintainability, and long-term
-            developer ecosystem support.
-          </p>
-        </div>
-
-        <div className="tech-categorized-grid">
-          {techCategories.map((group) => (
-            <div key={group.category} className="tech-group-card">
-              <div className="group-header">
-                <span className="group-indicator-dot" />
-                <h3>{group.category}</h3>
-              </div>
-              <div className="group-items-list">
-                {group.items.map((tech) => (
-                  <div key={tech.name} className="tech-row-item">
-                    <strong className="tech-name">{tech.name}</strong>
-                    <span className="tech-role">{tech.description}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="tech-disclaimer">
-          <p>
-            We choose the technology stack based on specific project requirements, scalability
-            goals, and hosting preferences—not trend speculation.
-          </p>
-        </div>
       </div>
     </section>
   );
