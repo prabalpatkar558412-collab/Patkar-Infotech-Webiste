@@ -9,7 +9,7 @@ export default function ContactPage() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]} />
         <h1 className="sr-only">Contact Patkar Infotech about a Project</h1>
         <ContactSection />

@@ -118,12 +118,15 @@ function getServiceIcon(name: string) {
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -131,10 +134,24 @@ export function Header() {
   useEffect(() => {
     if (!menuOpen) return;
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMenuOpen(false);
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
     };
+    const closeOutside = (event: PointerEvent) => {
+      if (event.target instanceof Node && !headerRef.current?.contains(event.target)) setMenuOpen(false);
+    };
+    const desktopQuery = window.matchMedia("(min-width: 1200px)");
+    const closeOnDesktop = () => { if (desktopQuery.matches) setMenuOpen(false); };
     window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
+    document.addEventListener("pointerdown", closeOutside);
+    desktopQuery.addEventListener("change", closeOnDesktop);
+    return () => {
+      window.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("pointerdown", closeOutside);
+      desktopQuery.removeEventListener("change", closeOnDesktop);
+    };
   }, [menuOpen]);
 
   const navLinks = [
@@ -152,7 +169,7 @@ export function Header() {
     : pathname.startsWith("/services") ? "services"
     : pathname.startsWith("/work") || pathname.startsWith("/projects") ? "work"
           : pathname.startsWith("/about") ? "about"
-          : pathname.startsWith("/contact") ? "contact" : "home";
+          : pathname.startsWith("/contact") ? "contact" : pathname === "/" ? "home" : "";
 
   return (
     <>
@@ -163,18 +180,18 @@ export function Header() {
             <span className="live-dot" />
             <span className="ticker-badge">DIRECT ENGINEERING STUDIO</span>
             <span className="ticker-text">
-              Accepting select client projects for 2026 &middot; Jabalpur, MP &amp; International
+              Accepting new client projects &middot; Jabalpur, MP &amp; International
             </span>
           </div>
           <div className="ticker-right">
-            <a href={`tel:${siteConfig.phone}`} className="ticker-phone">
+            <a href={`tel:+${siteConfig.whatsappNumber}`} className="ticker-phone">
               <Phone size={11} /> Call: {siteConfig.phoneFormatted}
             </a>
           </div>
         </div>
       </div>
 
-      <header className={`site-header ${isScrolled ? "is-scrolled" : ""}`}>
+      <header ref={headerRef} className={`site-header ${isScrolled ? "is-scrolled" : ""}`}>
         <div className="header-inner page-wrap">
           <BrandLogo />
 
@@ -194,6 +211,7 @@ export function Header() {
             </Link>
             <button
               type="button"
+              ref={menuButtonRef}
               className="mobile-menu-toggle"
               aria-controls="mobile-navigation"
               aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
@@ -208,7 +226,7 @@ export function Header() {
         {/* Mobile Drawer Menu */}
         {menuOpen && (
           <div className="mobile-nav-drawer" id="mobile-navigation">
-            <nav className="mobile-nav-links">
+            <nav className="mobile-nav-links" aria-label="Mobile Navigation">
               {navLinks.map((item) => (
                 <Link
                   key={item.label}
@@ -515,7 +533,7 @@ function TechPillIcon({ name }: { name: string }) {
   return <Code2 className="tech-pill-icon generic-tech-icon" aria-hidden="true" />;
 }
 
-function TechPill({ name }: { name: string }) {
+export function TechPill({ name }: { name: string }) {
   return <span className="tech-pill"><TechPillIcon name={name} />{name}</span>;
 }
 
@@ -523,19 +541,23 @@ export function ServicesSection() {
   return (
     <section className="section services-section" id="services" aria-label="Our services">
       <div className="page-wrap">
+        <div className="section-header">
+          <div className="section-eyebrow">OUR SERVICES</div>
+          <h2 className="section-title">The Right Technology for Your Business</h2>
+          <p className="section-subtitle">From your first website to the software your team uses every day, explore how we can help.</p>
+        </div>
         <div className={serviceCards.grid}>
-          {services.filter((item) => !["website-development", "custom-software-development"].includes(item.id)).map((item, idx) => (
+          {services.map((item) => (
             <article key={item.id} className={serviceCards.card}>
               <Link href={`/services/${item.slug}`} className={serviceCards.visual} aria-label={`Explore ${item.title}`} tabIndex={-1}>
                 <Image src={item.visualPreview} alt="" width={720} height={400} sizes="(max-width: 600px) 100vw, (max-width: 1100px) 50vw, 33vw" />
-                <span className={serviceCards.number}>{String(idx + 1).padStart(2, "0")}</span>
               </Link>
               <div className={serviceCards.body}>
                 <p className={serviceCards.category}>{item.category}</p>
                 <h3><Link href={`/services/${item.slug}`}>{item.title}</Link></h3>
                 <p className={serviceCards.summary}>{item.summary}</p>
                 <div className={serviceCards.footer}>
-                  <Link href={`/services/${item.slug}`} className={serviceCards.link}>Explore service <ArrowRight size={15} aria-hidden="true" /></Link>
+                  <Link href={`/services/${item.slug}`} className={serviceCards.link}>Explore service</Link>
                   <span className={serviceCards.technology}>{item.techStack[0]}</span>
                 </div>
               </div>
@@ -579,10 +601,18 @@ export function WorkSection() {
             type="button"
             id="website-projects-tab"
             role="tab"
+            tabIndex={activeProjectType === "website" ? 0 : -1}
             aria-selected={activeProjectType === "website"}
             aria-controls="project-type-grid"
             className={`project-type-tab ${activeProjectType === "website" ? "is-active" : ""}`}
             onClick={() => setActiveProjectType("website")}
+            onKeyDown={(event) => {
+              if (["ArrowRight", "ArrowLeft", "End"].includes(event.key)) {
+                event.preventDefault();
+                setActiveProjectType("app");
+                document.getElementById("app-projects-tab")?.focus();
+              }
+            }}
           >
             Website Projects
           </button>
@@ -590,10 +620,18 @@ export function WorkSection() {
             type="button"
             id="app-projects-tab"
             role="tab"
+            tabIndex={activeProjectType === "app" ? 0 : -1}
             aria-selected={activeProjectType === "app"}
             aria-controls="project-type-grid"
             className={`project-type-tab ${activeProjectType === "app" ? "is-active" : ""}`}
             onClick={() => setActiveProjectType("app")}
+            onKeyDown={(event) => {
+              if (["ArrowRight", "ArrowLeft", "Home"].includes(event.key)) {
+                event.preventDefault();
+                setActiveProjectType("website");
+                document.getElementById("website-projects-tab")?.focus();
+              }
+            }}
           >
             App Projects
           </button>
@@ -603,10 +641,16 @@ export function WorkSection() {
           id="project-type-grid"
           className={activeProjectType === "website" ? undefined : "projects-grid"}
           role="tabpanel"
+          tabIndex={0}
           aria-labelledby={activeProjectType === "website" ? "website-projects-tab" : "app-projects-tab"}
         >
           {activeProjectType === "website" ? (
-            <WebsiteDemos showHeader={false} />
+            <>
+              <WebsiteDemos showHeader={false} />
+              <div className="projects-grid website-projects-grid">
+                {visibleProjects.map((project) => <ProjectCard key={project.slug} project={project} />)}
+              </div>
+            </>
           ) : visibleProjects.map((project) => <ProjectCard key={project.slug} project={project} />)}
         </div>
 
@@ -1092,7 +1136,7 @@ export function ContactSection() {
               <div>
                 <small>Phone &amp; WhatsApp</small>
                 <strong>
-                  <a href={`tel:${siteConfig.phone}`}>{siteConfig.phoneFormatted}</a>
+                  <a href={`tel:+${siteConfig.whatsappNumber}`}>{siteConfig.phoneFormatted}</a>
                 </strong>
               </div>
             </div>
@@ -1121,7 +1165,7 @@ export function ContactSection() {
           </div>
 
           <div className="contact-guarantee-card">
-            <h4>What happens after you submit?</h4>
+            <h4>What happens after you send your inquiry?</h4>
             <ol>
               <li>We analyze your stated features and operational goals.</li>
               <li>We schedule a brief discussion to clarify technical unknowns.</li>
@@ -1158,7 +1202,7 @@ export function Footer() {
               </p>
               <p>
                 <strong>Phone / WhatsApp:</strong>{" "}
-                <a href={`tel:${siteConfig.phone}`}>{siteConfig.phoneFormatted}</a>
+                <a href={`tel:+${siteConfig.whatsappNumber}`}>{siteConfig.phoneFormatted}</a>
               </p>
               <p>
                 <strong>Email:</strong>{" "}
@@ -1220,10 +1264,10 @@ export function Footer() {
                 <Link href="/work">Our Work</Link>
               </li>
               <li>
-                <Link href="/#about">About Us</Link>
+                <Link href="/about">About Us</Link>
               </li>
               <li>
-                <Link href="/#process">Our Process</Link>
+                <Link href="/process">Our Process</Link>
               </li>
               <li>
                 <Link href="/contact">Contact</Link>
@@ -1267,6 +1311,9 @@ export function Footer() {
                 <Link href="/terms">Terms &amp; Conditions</Link>
               </li>
               <li>
+                <Link href="/tools">Tools &amp; Technologies</Link>
+              </li>
+              <li>
                 <Link href="/contact">Start a Project</Link>
               </li>
             </ul>
@@ -1280,7 +1327,7 @@ export function Footer() {
             <span className="dot-divider">&middot;</span>
             <Link href="/terms">Terms</Link>
             <span className="dot-divider">&middot;</span>
-            <a href="#home">Back to top &uarr;</a>
+            <a href="#top">Back to top</a>
           </div>
         </div>
 
@@ -1323,7 +1370,7 @@ export default function Site() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <Hero />
         <ClientBrands />
         <WebsiteDemos />

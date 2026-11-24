@@ -35,7 +35,7 @@ export default async function ProjectPage({
   return (
     <>
       <Header />
-      <main className="case-study-page">
+      <main id="main-content" tabIndex={-1} className="case-study-page">
         <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Our Work", path: "/work" }, { name: project.title, path: `/projects/${project.slug}` }]} />
         {/* Back Link */}
         <div className="page-wrap case-back-bar">
@@ -83,7 +83,7 @@ export default async function ProjectPage({
               width={960}
               height={500}
               className="case-preview-img"
-              priority
+              preload
             />
           </div>
 
@@ -93,8 +93,8 @@ export default async function ProjectPage({
               <ShieldCheck size={18} className="text-sky-600 flex-shrink-0" />
               <p>
                 <strong>Verified Client Delivery:</strong> This project was commissioned by and
-                developed for <strong>{project.clientOrBrand}</strong>. All live links lead to
-                the active production deployment.
+                developed for <strong>{project.clientOrBrand}</strong>. Explore the project
+                overview and available previews on this page.
               </p>
             </div>
           ) : (

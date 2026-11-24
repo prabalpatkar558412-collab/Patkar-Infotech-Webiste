@@ -9,7 +9,7 @@ export default function ServicesPage() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]} />
         <h1 className="sr-only">Website, App and Custom Software Development Services</h1>
         <ServicesSection />

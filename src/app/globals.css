@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: 12px;
+  left: 12px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: #102f70;
+  color: #fff;
+  transform: translateY(-150%);
+}
+.skip-link:focus { transform: translateY(0); }
+
 :root {
   --navy: #102f70;
   --navy-dark: #0b2252;
@@ -36,6 +49,12 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
 }
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid #1769c2;
+  outline-offset: 4px;
+}
+main:focus { outline: none; }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "Manrope Variable", "Inter Variable", sans-serif;
@@ -5785,4 +5804,69 @@ body { color: var(--ink); background: var(--paper); }
   .client-brands { padding: 28px 0; }
   .client-brands-list { gap: 8px; }
   .client-brand-card { padding: 12px 8px; font-size: 13px; min-height: 88px; border-radius: 12px; }
+}
+
+/* Page review: readable forms, complete technology page and keyboard navigation. */
+.inquiry-form-title { margin: 0 0 10px; font-size: 22px; }
+.inquiry-form-intro { margin: 0 0 24px; font-size: 14px; color: var(--muted); }
+.form-label { font-size: 14px; }
+.form-input, .form-select, .form-textarea { min-height: 48px; font-size: 16px; }
+.form-select {
+  appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='m4 6 4 4 4-4' fill='none' stroke='%23526174' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+.form-select, .budget-select { padding-left: 14px; }
+.form-textarea { resize: vertical; }
+.field-error { font-size: 14px; }
+.inquiry-character-count { align-self: flex-end; color: var(--muted); font-size: 12px; }
+.form-footer-notice { font-size: 13px; }
+.form-footer-notice svg { flex-shrink: 0; margin-top: 3px; }
+.form-footer-notice a { text-decoration: underline; text-underline-offset: 3px; }
+.inquiry-message-preview {
+  max-height: 320px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  text-align: left;
+  font: inherit;
+  font-size: 14px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+}
+.success-meta { font-size: 14px; }
+.success-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.success-actions .button { white-space: normal; }
+.success-icon-badge { color: #15803d; }
+.contact-info-panel, .contact-form-panel, .form-group { min-width: 0; }
+.contact-point-item a, .footer-contact-summary a { overflow-wrap: anywhere; }
+.mobile-nav-drawer { max-height: calc(100dvh - 100px); overflow-y: auto; overscroll-behavior: contain; }
+.project-type-tab, .mobile-menu-toggle { min-height: 44px; }
+.mobile-menu-toggle { min-width: 44px; }
+.website-projects-grid { margin-top: 32px; }
+.technology-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.technology-group { padding: clamp(24px, 3vw, 36px); min-width: 0; border: 1px solid var(--line); border-radius: 18px; background: white; }
+.technology-group h2 { margin: 0 0 12px; font-size: 23px; }
+.technology-group p { margin: 0 0 24px; font-size: 16px; color: var(--muted); }
+.technology-group-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.technology-group-list .tech-pill { font-size: 14px; padding: 8px 12px; }
+.tools-contact { padding: 40px 0 0; max-width: 680px; }
+.tools-contact h2 { font-size: clamp(24px, 3vw, 32px); }
+.tools-contact p { font-size: 16px; color: var(--muted); margin-bottom: 24px; }
+.not-found-page { min-height: 50vh; }
+.not-found-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+@media (max-width: 640px) {
+  .technology-groups { grid-template-columns: minmax(0, 1fr); }
+  .inquiry-success-panel { padding: 8px 0; }
+  .inquiry-message-preview { padding: 14px; }
+  .success-actions .button { width: 100%; }
+  .form-submit-row .button { max-width: 100%; white-space: normal; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }

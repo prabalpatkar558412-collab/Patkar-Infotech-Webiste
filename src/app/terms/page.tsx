@@ -12,7 +12,7 @@ export default function Terms() {
   return (
     <>
       <Header />
-      <main className="legal-page-wrapper">
+      <main id="main-content" tabIndex={-1} className="legal-page-wrapper">
         <div className="page-wrap legal-container">
           <div className="legal-back-bar">
             <Link href="/" className="case-back-link">

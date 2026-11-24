@@ -51,9 +51,9 @@ export const siteConfig: CompanyConfig = {
     instagram:
       process.env.NEXT_PUBLIC_INSTAGRAM_URL ||
       "https://www.instagram.com/guru3695495/",
-    facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || "https://www.facebook.com/",
-    youtube: process.env.NEXT_PUBLIC_YOUTUBE_URL || "https://www.youtube.com/",
-    linkedin: process.env.NEXT_PUBLIC_LINKEDIN_URL || "https://www.linkedin.com/",
+    facebook: companyProfile(process.env.NEXT_PUBLIC_FACEBOOK_URL, "facebook.com"),
+    youtube: companyProfile(process.env.NEXT_PUBLIC_YOUTUBE_URL, "youtube.com"),
+    linkedin: companyProfile(process.env.NEXT_PUBLIC_LINKEDIN_URL, "linkedin.com"),
   },
   navigation: [
     { label: "Home", href: "/#home" },
@@ -61,7 +61,19 @@ export const siteConfig: CompanyConfig = {
     { label: "Website Development", href: "/services/website-development" },
     { label: "Custom Software", href: "/services/custom-software-development" },
     { label: "Our Work", href: "/work" },
-    { label: "About Us", href: "/#about" },
-    { label: "Contact", href: "/#contact" },
+    { label: "About Us", href: "/about" },
+    { label: "Contact", href: "/contact" },
   ],
 };
+
+// Only show links to configured company profiles, never a platform's homepage.
+function companyProfile(value: string | undefined, domain: string): string | undefined {
+  if (!value) return undefined;
+  try {
+    const url = new URL(value);
+    const host = url.hostname.replace(/^www\./, "");
+    return url.protocol === "https:" && host === domain && url.pathname.replace(/\//g, "") ? url.href : undefined;
+  } catch {
+    return undefined;
+  }
+}

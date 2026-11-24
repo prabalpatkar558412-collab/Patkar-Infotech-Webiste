@@ -10,7 +10,7 @@ export default function WorkPage() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Our Work", path: "/work" }]} />
         <h1 className="sr-only">Patkar Infotech Projects and Portfolio</h1>
         <WorkSection />

@@ -198,7 +198,7 @@ export const projects: ProjectItem[] = [
     clientOrBrand: "The Nut House",
     clientDetails: "Makhana and dry-fruit brand based in Maldah, West Bengal.",
     isClientWork: true,
-    statusBadge: "Client Project · Live Website",
+    statusBadge: "Client Project · Storefront Preview",
     category: "E-commerce Platforms",
     categorySlug: "ecommerce",
     shortDescription:
@@ -216,7 +216,8 @@ export const projects: ProjectItem[] = [
       "Responsive desktop and mobile storefront presentation",
     ],
     techStack: ["React", "Supabase", "Next.js", "TypeScript", "Tailwind CSS"],
-    liveUrl: "https://www.nuthouse.co.in/",
+    // The client's public domain returned 404 during the November 2026 review.
+    // Restore https://www.nuthouse.co.in/ after the storefront is available again.
     previewImage: "/images/projects/nuthouse-makhana-storefront.png",
     accentColor: "#84361f",
   },

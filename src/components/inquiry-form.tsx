@@ -1,438 +1,140 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  ArrowRight,
-  CheckCircle2,
-  AlertCircle,
-  Mail,
-  Phone,
-  Building,
-  User,
-  Layers,
-  HelpCircle,
-} from "lucide-react";
+import { useEffect, useId, useRef, useState, type ChangeEvent } from "react";
+import Link from "next/link";
+import { Building, CheckCircle2, HelpCircle, Mail, Phone, User } from "lucide-react";
 import { siteConfig } from "@/lib/config";
+import { EMPTY_INQUIRY, INQUIRY_LIMITS, PROJECT_TYPES, inquiryLinks, inquiryMessage, validateInquiry, type InquiryData, type InquiryErrors, type InquiryField } from "@/lib/inquiry";
 
-function WhatsAppIcon({ size = 16 }: { size?: number }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width={size}
-      height={size}
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        fill="currentColor"
-        d="M20.52 3.48A11.86 11.86 0 0 0 12.08 0C5.5 0 .16 5.34.16 11.92c0 2.1.55 4.15 1.6 5.96L.1 24l6.27-1.64a11.94 11.94 0 0 0 5.7 1.45h.01c6.57 0 11.91-5.34 11.92-11.91a11.85 11.85 0 0 0-3.48-8.42ZM12.08 21.8h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.22-3.72.98.99-3.63-.24-.37a9.87 9.87 0 0 1-1.52-5.26c0-5.46 4.44-9.9 9.9-9.9 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 7c0 5.45-4.44 9.88-9.88 9.88Z"
-      />
-      <path
-        fill="currentColor"
-        d="M17.5 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.23-.64.08-.3-.15-1.26-.46-2.39-1.47-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.09 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z"
-      />
-    </svg>
-  );
-}
+const projectLabels: Record<string, string> = {
+  Website: "Website Development",
+  "Mobile Application": "Mobile Application (iOS / Android)",
+  "Custom Software": "Custom Software Development",
+  "E-commerce": "E-commerce Development",
+  "Admin Panel": "Admin Panels and Dashboards",
+  "Business Management System": "Business Management System / ERP",
+  Other: "Other Specialized Solution",
+};
 
-interface FormDataState {
-  name: string;
-  company: string;
-  email: string;
-  phone: string;
-  projectType: string;
-  budget: string;
-  description: string;
-}
-
-interface FormErrors {
-  name?: string;
-  company?: string;
-  email?: string;
-  phone?: string;
-  projectType?: string;
-  description?: string;
-  general?: string;
-}
+const textFields = [
+  { name: "name", label: "Full Name", placeholder: "Your full name", type: "text", autoComplete: "name", Icon: User },
+  { name: "company", label: "Business or Company Name", placeholder: "Your business name", type: "text", autoComplete: "organization", Icon: Building },
+  { name: "email", label: "Email Address", placeholder: "name@company.com", type: "email", autoComplete: "email", Icon: Mail },
+  { name: "phone", label: "Phone Number / WhatsApp", placeholder: "+91 98765 43210", type: "tel", autoComplete: "tel", Icon: Phone },
+] as const;
 
 export function ProjectInquiryForm() {
-  const [formData, setFormData] = useState<FormDataState>({
-    name: "",
-    company: "",
-    email: "",
-    phone: "",
-    projectType: "",
-    budget: "",
-    description: "",
+  const [formData, setFormData] = useState<InquiryData>({ ...EMPTY_INQUIRY });
+  const [errors, setErrors] = useState<InquiryErrors>({});
+  const [prepared, setPrepared] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const reviewRef = useRef<HTMLDivElement>(null);
+  const formId = useId();
+
+  useEffect(() => {
+    if (prepared) reviewRef.current?.focus();
+  }, [prepared]);
+
+  function update(field: InquiryField, value: string) {
+    setFormData((current) => ({ ...current, [field]: value }));
+    setErrors((current) => ({ ...current, [field]: undefined }));
+  }
+
+  function validate() {
+    const result = validateInquiry(formData);
+    setErrors(result.errors);
+    if (Object.keys(result.errors).length) {
+      requestAnimationFrame(() => formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus());
+      return false;
+    }
+    setFormData(result.data);
+    return true;
+  }
+
+  const links = inquiryLinks(formData, siteConfig.whatsappNumber, siteConfig.email);
+  const fieldProps = (field: InquiryField) => ({
+    id: `${formId}-${field}`,
+    name: field,
+    value: formData[field],
+    maxLength: INQUIRY_LIMITS[field],
+    "aria-invalid": Boolean(errors[field]),
+    "aria-describedby": errors[field] ? `${formId}-${field}-error` : undefined,
+    onChange: (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => update(field, event.target.value),
   });
-
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submittedData, setSubmittedData] = useState<{
-    inquiryId: string;
-    timestamp: string;
-  } | null>(null);
-
-  const validate = (): boolean => {
-    const newErrors: FormErrors = {};
-
-    if (!formData.name.trim() || formData.name.trim().length < 2) {
-      newErrors.name = "Please provide your full name (at least 2 characters).";
-    }
-
-    if (!formData.company.trim()) {
-      newErrors.company = "Please enter your business or company name.";
-    }
-
-    if (
-      !formData.email.trim() ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())
-    ) {
-      newErrors.email = "Please enter a valid email address.";
-    }
-
-    const cleanPhone = formData.phone.replace(/\D/g, "");
-    if (!cleanPhone || cleanPhone.length < 10) {
-      newErrors.phone = "Please enter a valid 10-digit phone or WhatsApp number.";
-    }
-
-    if (!formData.projectType) {
-      newErrors.projectType = "Please select the type of product you want to build.";
-    }
-
-    if (!formData.description.trim() || formData.description.trim().length < 10) {
-      newErrors.description =
-        "Please provide a short description of your project (minimum 10 characters).";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validate()) {
-      return;
-    }
-
-    setIsSubmitting(true);
-    setErrors({});
-
-    try {
-      const response = await fetch("/api/inquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        setSubmittedData({
-          inquiryId: result.inquiryId,
-          timestamp: result.timestamp,
-        });
-      } else {
-        if (result.errors) {
-          setErrors(result.errors);
-        } else {
-          setErrors({
-            general:
-              result.message ||
-              "Could not complete online submission. Please try sending directly via WhatsApp.",
-          });
-        }
-      }
-    } catch {
-      setErrors({
-        general:
-          "Network connectivity issue. You can instantly send your inquiry details via WhatsApp below.",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // Keep the message readable in both WhatsApp's composer and sent messages.
-  const constructWhatsAppMessage = () => {
-    const lines = [
-      "New Project Inquiry | Patkar Infotech",
-      "",
-      "Hello Patkar Infotech team,",
-      "I would like to discuss a project. Here are my details:",
-      "",
-      `Full Name: ${formData.name.trim()}`,
-      `Business / Company: ${formData.company.trim()}`,
-      `Phone / WhatsApp: ${formData.phone.trim()}`,
-      `Email: ${formData.email.trim()}`,
-      "",
-      `Project Type: ${formData.projectType}`,
-      ...(formData.budget.trim() ? [`Budget: ${formData.budget.trim()}`] : []),
-      "",
-      "Project Requirements:",
-      formData.description.trim(),
-      "",
-      "Please let me know the next steps, estimated timeline and quotation.",
-      "Thank you!",
-    ];
-
-    return encodeURIComponent(lines.join("\n"));
-  };
-
-  const whatsappHref = `https://wa.me/${siteConfig.whatsappNumber}?text=${constructWhatsAppMessage()}`;
+  const fieldError = (field: InquiryField) => errors[field] ? <span id={`${formId}-${field}-error`} className="field-error">{errors[field]}</span> : null;
 
   return (
     <div className="inquiry-card-wrapper" id="inquiry">
-      {submittedData ? (
-        <div className="inquiry-success-panel" role="status">
-          <div className="success-icon-badge">
-            <CheckCircle2 size={36} className="text-emerald-600" />
-          </div>
-          <h3>Inquiry Received Successfully</h3>
-          <p className="success-lead">
-            Thank you, <strong>{formData.name}</strong>. Your project inquiry has been
-            registered with reference ID:
-          </p>
-          <div className="reference-code-box">
-            <span>Reference ID:</span>
-            <strong>{submittedData.inquiryId}</strong>
-          </div>
-          <p className="success-meta">
-            Our technical team will review your requirements and get in touch via{" "}
-            <strong>{formData.phone}</strong> or <strong>{formData.email}</strong> to discuss
-            the project scope and development approach.
-          </p>
-
+      {prepared ? (
+        <div className="inquiry-success-panel" ref={reviewRef} tabIndex={-1} aria-labelledby={`${formId}-review-title`}>
+          <div className="success-icon-badge"><CheckCircle2 size={36} aria-hidden="true" /></div>
+          <h3 id={`${formId}-review-title`}>Your Inquiry Is Ready to Send</h3>
+          <p className="success-lead">Thank you, <strong>{formData.name}</strong>. Review your message, then send it to our team.</p>
+          <pre className="inquiry-message-preview">{inquiryMessage(formData)}</pre>
+          <p className="success-meta">Your inquiry reaches us after you press Send in WhatsApp or your email app.</p>
           <div className="success-actions">
-            <a
-              href={whatsappHref}
-              target="_blank"
-              rel="noreferrer"
-              className="button button-whatsapp"
-            >
-              <WhatsAppIcon /> Fast-Track on WhatsApp
-            </a>
-            <button
-              type="button"
-              className="button button-outline"
-              onClick={() => {
-                setSubmittedData(null);
-                setFormData({
-                  name: "",
-                  company: "",
-                  email: "",
-                  phone: "",
-                  projectType: "",
-                  budget: "",
-                  description: "",
-                });
-              }}
-            >
-              Submit Another Inquiry
-            </button>
+            <a href={links.whatsappUrl} target="_blank" rel="noreferrer" className="button button-whatsapp">Open WhatsApp to Send</a>
+            <a href={links.emailUrl} className="button button-outline"><Mail size={16} aria-hidden="true" /> Send by Email</a>
+            <button type="button" className="button button-outline" onClick={() => {
+              setPrepared(false);
+              requestAnimationFrame(() => formRef.current?.querySelector<HTMLInputElement>("input")?.focus());
+            }}>Edit Inquiry</button>
           </div>
         </div>
       ) : (
-        <form className="inquiry-form" onSubmit={handleSubmit} noValidate>
-          {errors.general && (
-            <div className="form-alert-banner alert-error" role="alert">
-              <AlertCircle size={16} />
-              <span>{errors.general}</span>
-            </div>
-          )}
-
+        <form className="inquiry-form" ref={formRef} noValidate onSubmit={(event) => {
+          event.preventDefault();
+          if (validate()) setPrepared(true);
+        }}>
+          <h3 className="inquiry-form-title">Tell Us About Your Project</h3>
+          <p className="inquiry-form-intro">Fill in your details, review your message, and send it through WhatsApp or email. Fields marked * are required.</p>
           <div className="form-grid-2">
-            {/* Full Name */}
-            <div className="form-group">
-              <label htmlFor="name" className="form-label">
-                Full Name <span className="req">*</span>
-              </label>
-              <div className="input-with-icon">
-                <User size={15} className="input-icon" />
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  placeholder="e.g. Vikram Chaudhary"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={`form-input ${errors.name ? "has-error" : ""}`}
-                  autoComplete="name"
-                  required
-                />
+            {textFields.map(({ name, label, placeholder, type, autoComplete, Icon }) => (
+              <div className="form-group" key={name}>
+                <label htmlFor={`${formId}-${name}`} className="form-label">{label} <span className="req" aria-hidden="true">*</span></label>
+                <div className="input-with-icon">
+                  <Icon size={16} className="input-icon" aria-hidden="true" />
+                  <input {...fieldProps(name)} type={type} placeholder={placeholder} autoComplete={autoComplete} required className={`form-input ${errors[name] ? "has-error" : ""}`} />
+                </div>
+                {fieldError(name)}
               </div>
-              {errors.name && <span className="field-error">{errors.name}</span>}
+            ))}
+          </div>
+          <div className="form-grid-2">
+            <div className="form-group">
+              <label htmlFor={`${formId}-projectType`} className="form-label">Project Type <span className="req" aria-hidden="true">*</span></label>
+              <select {...fieldProps("projectType")} required className={`form-select budget-select ${errors.projectType ? "has-error" : ""}`}>
+                <option value="" disabled>Select project type…</option>
+                {PROJECT_TYPES.map((type) => <option key={type} value={type}>{projectLabels[type]}</option>)}
+              </select>
+              {fieldError("projectType")}
             </div>
-
-            {/* Business / Company Name */}
             <div className="form-group">
-              <label htmlFor="company" className="form-label">
-                Business or Company Name <span className="req">*</span>
-              </label>
-              <div className="input-with-icon">
-                <Building size={15} className="input-icon" />
-                <input
-                  type="text"
-                  id="company"
-                  name="company"
-                  placeholder="e.g. Chaudhary Enterprises"
-                  value={formData.company}
-                  onChange={handleChange}
-                  className={`form-input ${errors.company ? "has-error" : ""}`}
-                  required
-                  autoComplete="organization"
-                />
-              </div>
-              {errors.company && <span className="field-error">{errors.company}</span>}
+              <label htmlFor={`${formId}-budget`} className="form-label">Estimated Budget (Optional)</label>
+              <select {...fieldProps("budget")} className="form-select budget-select">
+                <option value="">Select a range…</option>
+                <option value="Under ₹25,000">Under ₹25,000</option>
+                <option value="₹25,000–₹50,000">₹25,000–₹50,000</option>
+                <option value="₹50,000–₹1,00,000">₹50,000–₹1,00,000</option>
+                <option value="₹1,00,000+">₹1,00,000+</option>
+                <option value="Let's discuss">Let’s discuss</option>
+              </select>
+              {fieldError("budget")}
             </div>
           </div>
-
-          <div className="form-grid-2">
-            {/* Email Address */}
-            <div className="form-group">
-              <label htmlFor="email" className="form-label">
-                Email Address <span className="req">*</span>
-              </label>
-              <div className="input-with-icon">
-                <Mail size={15} className="input-icon" />
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="name@company.com"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`form-input ${errors.email ? "has-error" : ""}`}
-                  autoComplete="email"
-                  required
-                />
-              </div>
-              {errors.email && <span className="field-error">{errors.email}</span>}
-            </div>
-
-            {/* Phone Number */}
-            <div className="form-group">
-              <label htmlFor="phone" className="form-label">
-                Phone Number / WhatsApp <span className="req">*</span>
-              </label>
-              <div className="input-with-icon">
-                <Phone size={15} className="input-icon" />
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  placeholder="+91 98765 43210"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className={`form-input ${errors.phone ? "has-error" : ""}`}
-                  autoComplete="tel"
-                  required
-                />
-              </div>
-              {errors.phone && <span className="field-error">{errors.phone}</span>}
-            </div>
-          </div>
-
-          <div className="form-grid-2">
-            {/* Project Type */}
-            <div className="form-group">
-              <label htmlFor="projectType" className="form-label">
-                Project Type <span className="req">*</span>
-              </label>
-              <div className="input-with-icon">
-                <Layers size={15} className="input-icon" />
-                <select
-                  id="projectType"
-                  name="projectType"
-                  value={formData.projectType}
-                  onChange={handleChange}
-                  className={`form-select ${errors.projectType ? "has-error" : ""}`}
-                  required
-                >
-                  <option value="" disabled>
-                    Select project type...
-                  </option>
-                  <option value="Website">Website Development</option>
-                  <option value="Mobile Application">Mobile Application (iOS / Android)</option>
-                  <option value="Custom Software">Custom Software Development</option>
-                  <option value="E-commerce">E-commerce Development</option>
-                  <option value="Admin Panel">Admin Panel and Dashboards</option>
-                  <option value="Business Management System">Business Management System / ERP</option>
-                  <option value="Other">Other Specialized Solution</option>
-                </select>
-              </div>
-              {errors.projectType && (
-                <span className="field-error">{errors.projectType}</span>
-              )}
-            </div>
-
-          </div>
-
-          {/* Project Description */}
           <div className="form-group">
-            <label htmlFor="description" className="form-label">
-              Project Description <span className="req">*</span>
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              rows={4}
-              placeholder="Tell us what you want to achieve, key features required, and any target timelines..."
-              value={formData.description}
-              onChange={handleChange}
-              className={`form-textarea ${errors.description ? "has-error" : ""}`}
-              required
-            />
-            {errors.description && (
-              <span className="field-error">{errors.description}</span>
-            )}
+            <label htmlFor={`${formId}-description`} className="form-label">Project Description <span className="req" aria-hidden="true">*</span></label>
+            <textarea {...fieldProps("description")} rows={5} placeholder="Tell us what you want to build, the key features, and your target timeline…" required className={`form-textarea ${errors.description ? "has-error" : ""}`} />
+            {fieldError("description")}
+            <span className="inquiry-character-count">{formData.description.length} / {INQUIRY_LIMITS.description} characters</span>
           </div>
-
-          {/* Submit Row */}
           <div className="form-submit-row">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="button button-blue button-submit"
-            >
-              {isSubmitting ? "Submitting..." : "Submit Project Inquiry"}
-              <ArrowRight size={16} />
-            </button>
-
-            <span className="or-divider">or</span>
-
-            <a
-              href={whatsappHref}
-              target="_blank"
-              rel="noreferrer"
-              className="button button-whatsapp-secondary"
-              onClick={(event) => {
-                if (!validate()) {
-                  event.preventDefault();
-                }
-              }}
-              title="Fill in all details to send your inquiry on WhatsApp"
-            >
-              <WhatsAppIcon /> Direct WhatsApp Inquiry
-            </a>
+            <button type="submit" className="button button-blue button-submit">Review Project Inquiry</button>
+            <a href={links.whatsappUrl} target="_blank" rel="noreferrer" className="button button-whatsapp-secondary" onClick={(event) => { if (!validate()) event.preventDefault(); }}>Send via WhatsApp</a>
           </div>
-
           <div className="form-footer-notice">
-            <HelpCircle size={13} className="text-slate-400" />
-            <span>
-              We review every requirement carefully before proposing scope and costs. No spam or aggressive follow-ups.
-            </span>
+            <HelpCircle size={16} aria-hidden="true" />
+            <span>Your details stay in this form until you choose to send them. Read our <Link href="/privacy-policy">Privacy Policy</Link>.</span>
           </div>
         </form>
       )}

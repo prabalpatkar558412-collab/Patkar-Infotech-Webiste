@@ -12,7 +12,7 @@ export default function PrivacyPolicy() {
   return (
     <>
       <Header />
-      <main className="legal-page-wrapper">
+      <main id="main-content" tabIndex={-1} className="legal-page-wrapper">
         <div className="page-wrap legal-container">
           <div className="legal-back-bar">
             <Link href="/" className="case-back-link">
@@ -27,15 +27,16 @@ export default function PrivacyPolicy() {
                 <span>LEGAL &amp; PRIVACY</span>
               </div>
               <h1>Privacy Policy</h1>
-              <p className="legal-effective">Last updated: October 2026 &middot; Patkar Infotech</p>
+              <p className="legal-effective">Last updated: November 2026 &middot; Patkar Infotech</p>
             </div>
 
             <section className="legal-section">
               <h2>1. Information We Collect</h2>
               <p>
-                When you submit a project inquiry through our website, we collect your name,
-                business or company name, email address, phone number, project type, estimated
-                budget, and requirements description.
+                The inquiry form prepares a message using your name, company name, email,
+                phone number, project type, optional budget and requirements. Reviewing the
+                message does not send it to our team or save it in a website inquiry database.
+                We receive these details when you send the message through WhatsApp or email.
               </p>
             </section>
 
@@ -61,9 +62,9 @@ export default function PrivacyPolicy() {
             <section className="legal-section">
               <h2>4. WhatsApp &amp; Direct Communication</h2>
               <p>
-                If you choose to contact us via WhatsApp or direct phone call, communication is
-                governed by end-to-end encryption protocols and standard telecommunication
-                standards.
+                WhatsApp and email links open the service you choose with a prepared message.
+                You can review it before sending. Your use of these services is subject to
+                their own privacy policies. Avoid including passwords or sensitive account details.
               </p>
             </section>
 

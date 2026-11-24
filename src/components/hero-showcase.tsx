@@ -27,7 +27,7 @@ export function HeroShowcase() {
           alt="CareOn24 home healthcare website shown on desktop and mobile screens"
           width={820}
           height={500}
-          priority
+          preload
           className="hero-product-image"
         />
       </div>

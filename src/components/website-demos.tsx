@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { projects } from "@/lib/projects";
 import { websiteDemos } from "@/lib/website-demos";
+import { ShowcaseVideo } from "./showcase-video";
 import styles from "./website-demos.module.css";
 
 export function WebsiteDemos({ showHeader = true }: { showHeader?: boolean }) {
@@ -25,10 +26,7 @@ export function WebsiteDemos({ showHeader = true }: { showHeader?: boolean }) {
                 <span className={styles.speaker} aria-hidden="true" />
                 <div className={styles.screen}>
                   {demo.video ? (
-                    <video autoPlay muted loop playsInline preload="metadata" poster={project?.previewImage} aria-label={project ? `${project.clientOrBrand} website demo` : "Website showcase demo"}>
-                      <source src={demo.video} type="video/mp4" />
-                      Your browser does not support video playback.
-                    </video>
+                    <ShowcaseVideo src={demo.video} poster={project?.previewImage} label={project ? `${project.clientOrBrand} website demo` : "Website showcase demo"} />
                   ) : project ? (
                     <Link href={`/projects/${project.slug}`} className={styles.preview} aria-label={`Explore ${project.clientOrBrand}`}>
                       <div className={styles.image}>
@@ -39,6 +37,7 @@ export function WebsiteDemos({ showHeader = true }: { showHeader?: boolean }) {
                 </div>
                 <span className={styles.homeBar} aria-hidden="true" />
               </div>
+              {project && <figcaption><Link href={`/projects/${project.slug}`}>Explore {project.clientOrBrand}</Link></figcaption>}
             </figure>
           );
         })}

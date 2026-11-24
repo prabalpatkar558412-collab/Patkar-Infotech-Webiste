@@ -12,7 +12,7 @@ Built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, and **Tail
 - **Tagline:** Solutions That Empower
 - **Brand Message:** *"We build websites, apps and software around your business."*
 - **Headquarters:** Jabalpur, Madhya Pradesh, India
-- **Contact:** +91 77238 21518 / info@patkarinfotech.com
+- **Contact:** +91 77238 21518 / infotechpatkar@gmail.com
 - **Verified Client Work:** CareOn24 Home Healthcare Platform (`https://www.careon24.com/`)
 
 ---
@@ -60,8 +60,9 @@ Built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, and **Tail
 
 9. **Project Inquiry System:**
    - Validated inquiry form capturing Full Name, Company, Email, Phone, Project Type, Estimated Budget, and Description.
-   - Integrated API backend at `/api/inquiry` saving to persistent storage.
-   - Instant WhatsApp prefilled inquiry handover.
+   - Review a prepared message, then send it through WhatsApp or an email app.
+   - The form keeps details in browser memory; it does not claim a message has been sent or a lead saved.
+   - `/api/inquiry` also validates payloads and returns handover links, with `delivered: false`. It does not persist inquiries or send messages.
 
 10. **WhatsApp Integration:**
     - Floating quick-contact widget with tooltip and prefilled inquiry message.
@@ -115,7 +116,7 @@ Built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, and **Tail
 ## 4. Getting Started
 
 ### Prerequisites
-- Node.js 18.18+ or Node.js 20+
+- Node.js 20.9 or newer (required by the installed Next.js version)
 
 ### Installation
 ```bash
@@ -131,7 +132,7 @@ cp .env.example .env.local
 | Variable | Description | Default |
 |---|---|---|
 | `NEXT_PUBLIC_SITE_URL` | Canonical domain URL | `https://www.patkarinfotech.com` |
-| `NEXT_PUBLIC_CONTACT_EMAIL` | Official inquiries email | `info@patkarinfotech.com` |
+| `NEXT_PUBLIC_CONTACT_EMAIL` | Official inquiries email | `infotechpatkar@gmail.com` |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | WhatsApp number with country code | `917723821518` |
 | `NEXT_PUBLIC_INSTAGRAM_URL` | Official Instagram link | `https://www.instagram.com/guru3695495/` |
 
@@ -146,3 +147,13 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 npm run build
 npm run start
 ```
+
+To run the route, link, asset, metadata and inquiry checks against a local production server:
+
+```bash
+npm run start -- --hostname 127.0.0.1 --port 3100
+# In a second terminal:
+node scripts/verify-site.mjs
+```
+
+You can pass a base URL to the verification script. Its inquiry checks only validate drafts; they do not send WhatsApp messages or emails.

@@ -12,7 +12,7 @@ export function BrandLogo({ invert = false }: { invert?: boolean }) {
           width={56}
           height={56}
           alt="Patkar Infotech logo"
-          priority
+          preload={!invert}
         />
       </div>
     </Link>

@@ -47,7 +47,7 @@ export default async function ServicePage({
   return (
     <>
       <Header />
-      <main className="service-page">
+      <main id="main-content" tabIndex={-1} className="service-page">
         <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }, { name: service.title, path: `/services/${service.slug}` }]} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "Service", name: service.title, description: service.summary, provider: { "@type": "Organization", name: "Patkar Infotech", url: SITE_URL }, url: `${SITE_URL}/services/${service.slug}` }).replace(/</g, "\\u003c") }} />
         {/* Back navigation */}

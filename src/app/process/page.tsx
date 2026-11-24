@@ -9,7 +9,7 @@ export default function ProcessPage() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Process", path: "/process" }]} />
         <h1 className="sr-only">Patkar Infotech Software Development Process</h1>
         <ProcessSection />

@@ -25,7 +25,7 @@ export function FounderSection() {
           <blockquote>Our goal is simple — to help your business move forward with technology that works for you.</blockquote>
           <div className={styles.actions}>
             <Link href="/work" className={styles.primary}>Explore our work <ArrowRight size={17} aria-hidden="true" /></Link>
-            <Link href="#contact" className={styles.secondary}>Talk to us</Link>
+            <Link href="/contact" className={styles.secondary}>Talk to us</Link>
           </div>
         </div>
       </div>
