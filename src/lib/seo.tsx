@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 
 export const SITE_URL = "https://www.patkarinfotech.com";
+export const SOCIAL_IMAGE = {
+  url: `${SITE_URL}/opengraph-image`,
+  width: 1200,
+  height: 630,
+  alt: "Patkar Infotech — Websites, apps and custom software built for business",
+};
 
 export function pageMetadata(title: string, description: string, path: string): Metadata {
   const url = `${SITE_URL}${path}`;
@@ -14,13 +20,13 @@ export function pageMetadata(title: string, description: string, path: string): 
       type: "website",
       url,
       siteName: "Patkar Infotech",
-      images: [{ url: `${SITE_URL}/patkar-infotech-logo.png`, alt: "Patkar Infotech" }],
+      images: [SOCIAL_IMAGE],
     },
     twitter: {
       card: "summary_large_image",
       title: `${title} | Patkar Infotech`,
       description,
-      images: [`${SITE_URL}/patkar-infotech-logo.png`],
+      images: [SOCIAL_IMAGE],
     },
   };
 }

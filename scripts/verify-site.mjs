@@ -25,9 +25,14 @@ for (const path of routes) {
   if (!html.includes('id="main-content"')) failures.push(`${path}: missing skip-link target`);
   const canonical = html.match(/<link rel="canonical" href="([^"]+)"/i)?.[1];
   if (!canonical || new URL(canonical).href !== new URL(path, canonicalOrigin).href) failures.push(`${path}: incorrect canonical URL`);
+  for (const attribute of ['property="og:image"', 'name="twitter:image"']) {
+    const image = html.match(new RegExp(`<meta ${attribute} content="([^"]+)"`, "i"))?.[1];
+    if (!image || new URL(decode(image)).origin !== canonicalOrigin || new URL(decode(image)).pathname !== "/opengraph-image") failures.push(`${path}: missing branded sharing preview`);
+  }
   pages.set(path, html);
   for (const match of html.matchAll(/\bhref="([^"]+)"/g)) {
     const href = decode(match[1]);
+    if (href.startsWith("tel:") && !/^tel:\+\d{10,15}$/.test(href)) failures.push(`${path}: phone link is missing an international number`);
     if (/^(mailto:|tel:|data:)/.test(href)) continue;
     const url = new URL(href, new URL(path, base));
     if (url.origin !== base.origin) continue;
@@ -67,6 +72,13 @@ assert.equal(missing.status, 404, "unmatched URL should return 404");
 assert((await missing.text()).includes("Go to Homepage"), "404 should offer a route home");
 const robots = await get("/robots.txt");
 assert((await robots.text()).includes(`${canonicalOrigin}/sitemap.xml`), "robots should reference the canonical sitemap");
+const socialImage = await get("/opengraph-image");
+assert.equal(socialImage.status, 200, "sharing preview should be available");
+assert(socialImage.headers.get("content-type")?.startsWith("image/png"), "sharing preview should be a PNG");
+const imageBytes = Buffer.from(await socialImage.arrayBuffer());
+assert.equal(imageBytes.subarray(0, 8).toString("hex"), "89504e470d0a1a0a", "sharing preview should contain valid PNG data");
+assert.equal(imageBytes.readUInt32BE(16), 1200, "sharing preview width");
+assert.equal(imageBytes.readUInt32BE(20), 630, "sharing preview height");
 
 // The public API prepares a draft; these checks never send a message or save a lead.
 const valid = { name: "Website QA", company: "Local verification", email: "qa@example.com", phone: "+91 98765 43210", projectType: "Website", budget: "Under ₹25,000", description: "Please build a responsive website. नमस्ते!" };

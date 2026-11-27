@@ -17,6 +17,7 @@
 .speaker { position: absolute; z-index: 1; top: 5px; left: 39%; width: 22%; height: 5px; background: #080c14; border-radius: 999px; }
 .screen { width: 100%; height: 100%; overflow: hidden; border-radius: 13px; background: #f0f7ff; }
 .screen video { display: block; width: 100%; height: 100%; object-fit: contain; background: #080c14; }
+.screen video:focus-visible { outline: 3px solid #38bdf8; outline-offset: -3px; }
 .homeBar { position: absolute; bottom: 5px; left: 34%; width: 32%; height: 3px; border-radius: 999px; background: #b9bfca; }
 .preview { display: flex; flex-direction: column; height: 100%; }
 .preview:focus-visible { outline: 3px solid var(--blue); outline-offset: -3px; }

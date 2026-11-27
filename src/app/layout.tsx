@@ -3,7 +3,7 @@ import "@fontsource-variable/inter/wght.css";
 import "@fontsource-variable/manrope/wght.css";
 import "./globals.css";
 import "../components/extras.css";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, SOCIAL_IMAGE } from "@/lib/seo";
 import { siteConfig } from "@/lib/config";
 
 export const metadata: Metadata = {
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
     shortcut: "/patkar-icon.png",
     apple: "/patkar-icon.png",
   },
-  openGraph: { title: "Patkar Infotech | Website, App & Software Development Company", description: "Patkar Infotech builds custom websites, mobile apps, web applications and business software for startups and businesses in India and worldwide. Discuss your project with our team.", type: "website", url: SITE_URL, siteName: "Patkar Infotech", images: [{ url: "/WhatsApp_Image_2026-10-19_at_2.23.42_AM-removebg-preview.png", alt: "Patkar Infotech" }] },
-  twitter: { card: "summary_large_image", title: "Patkar Infotech | Website, App & Software Development Company", description: "Patkar Infotech builds custom websites, mobile apps, web applications and business software for startups and businesses in India and worldwide. Discuss your project with our team.", images: ["/WhatsApp_Image_2026-10-19_at_2.23.42_AM-removebg-preview.png"] },
+  openGraph: { title: "Patkar Infotech | Website, App & Software Development Company", description: "Patkar Infotech builds custom websites, mobile apps, web applications and business software for startups and businesses in India and worldwide. Discuss your project with our team.", type: "website", url: SITE_URL, siteName: "Patkar Infotech", images: [SOCIAL_IMAGE] },
+  twitter: { card: "summary_large_image", title: "Patkar Infotech | Website, App & Software Development Company", description: "Patkar Infotech builds custom websites, mobile apps, web applications and business software for startups and businesses in India and worldwide. Discuss your project with our team.", images: [SOCIAL_IMAGE] },
   robots: { index: true, follow: true },
 };
 

@@ -157,3 +157,13 @@ node scripts/verify-site.mjs
 ```
 
 You can pass a base URL to the verification script. Its inquiry checks only validate drafts; they do not send WhatsApp messages or emails.
+
+## Publishing
+
+The production website is [www.patkarinfotech.com](https://www.patkarinfotech.com/). Vercel deploys the `main` branch of this GitHub repository. Run the production build and local verification above before pushing, then confirm the Vercel deployment succeeds and verify the live site:
+
+```bash
+node scripts/verify-site.mjs https://www.patkarinfotech.com
+```
+
+The branded sharing image is generated at `/opengraph-image` during the build. Website videos load when visible or focused with the keyboard; their demo labels are independent of the verified client case studies.

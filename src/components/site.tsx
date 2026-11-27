@@ -249,7 +249,7 @@ export function Header() {
                 </Link>
                 <div className="mobile-contact-snippet">
                   <p>Direct Inquiries:</p>
-                  <a href={`tel:${siteConfig.phone}`}>{siteConfig.phoneFormatted}</a>
+                  <a href={`tel:+${siteConfig.whatsappNumber}`}>{siteConfig.phoneFormatted}</a>
                 </div>
               </div>
             </nav>

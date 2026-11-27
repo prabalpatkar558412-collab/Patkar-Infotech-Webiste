@@ -37,7 +37,7 @@ export function ShowcaseVideo({ src, poster, label }: { src: string; poster?: st
   }, [load, visible, reducedMotion]);
 
   return (
-    <video ref={videoRef} src={load ? src : undefined} muted loop playsInline controls preload="none" poster={poster} aria-label={label}>
+    <video ref={videoRef} src={load ? src : undefined} muted loop playsInline controls preload="none" poster={poster} aria-label={label} tabIndex={0} onFocus={() => setLoad(true)}>
       Your browser does not support video playback. <a href={src}>Download this website demo.</a>
     </video>
   );
